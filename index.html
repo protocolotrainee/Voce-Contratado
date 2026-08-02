@@ -136,6 +136,23 @@
       display: block;
     }
 
+    /* Gradiente que cobre o rodapé nativo do YouTube antes do play e nos primeiros segundos */
+    .bottom-cover {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent 0%, rgba(10,10,10,0.88) 55%, #0a0a0a 100%);
+      z-index: 5;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+    }
+
+    .bottom-cover.invisivel {
+      opacity: 0;
+    }
+
     /* Camada sobre o player que bloqueia a UI nativa do YouTube */
     .video-overlay {
       position: absolute;
@@ -277,6 +294,8 @@
   <div class="video-section">
     <div class="video-wrapper">
       <div id="yt-player"></div>
+      <!-- Gradiente que esconde o rodapé do YouTube -->
+      <div class="bottom-cover" id="bottom-cover"></div>
       <!-- Camada que bloqueia a UI nativa do YouTube + botão de play -->
       <div class="video-overlay" id="video-overlay">
         <button class="play-btn" id="play-btn" aria-label="Reproduzir vídeo">
@@ -318,6 +337,7 @@
 
   var player;
   var progressInterval = null;
+  var rodapeOculto = false;
 
   function iniciarProgresso() {
     clearInterval(progressInterval);
@@ -384,6 +404,13 @@
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) {
             iniciarProgresso();
+            if (!rodapeOculto) {
+              rodapeOculto = true;
+              setTimeout(function () {
+                var cover = document.getElementById("bottom-cover");
+                if (cover) cover.classList.add("invisivel");
+              }, 3000);
+            }
           }
           if (e.data === YT.PlayerState.PAUSED) {
             clearInterval(progressInterval);
