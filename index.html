@@ -122,7 +122,7 @@
       width: 100%;
       aspect-ratio: 9 / 16;
       background: #0a0a0a;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
       overflow: hidden;
       position: relative;
     }
@@ -136,11 +136,64 @@
       display: block;
     }
 
+    /* Camada sobre o player que bloqueia a UI nativa do YouTube */
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botão de play centralizado */
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink-900);
+      padding-left: 4px; /* alinhamento óptico do triângulo */
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.3s ease;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.08);
+      background: #ffffff;
+    }
+
+    .play-btn.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* === Barra de progresso === */
+    .progress-container {
+      width: 100%;
+      height: 4px;
+      background: var(--ink-200);
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--red);
+      border-radius: 0 0 0 var(--radius-md);
+      transition: width 0.5s linear;
+    }
+
     /* === CTA — oculto até o vídeo terminar === */
     .cta-section {
       display: none;
       flex-direction: column;
       gap: 10px;
+      margin-top: 32px;
     }
 
     .cta-section.visible {
@@ -205,6 +258,7 @@
       html { scroll-behavior: auto; }
       .cta-section.visible { animation: none; }
       .cta-button.pulse    { animation: none; }
+      .progress-fill       { transition: none; }
     }
   </style>
 </head>
@@ -223,6 +277,18 @@
   <div class="video-section">
     <div class="video-wrapper">
       <div id="yt-player"></div>
+      <!-- Camada que bloqueia a UI nativa do YouTube + botão de play -->
+      <div class="video-overlay" id="video-overlay">
+        <button class="play-btn" id="play-btn" aria-label="Reproduzir vídeo">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- Barra de progresso (estilo VSL) -->
+    <div class="progress-container">
+      <div class="progress-fill" id="progress-fill"></div>
     </div>
   </div>
 
@@ -250,17 +316,34 @@
   const CHECKOUT_URL = "PLACEHOLDER_CHECKOUT_URL"; // URL do checkout do upsell
   // ================================================
 
+  var player;
+  var progressInterval = null;
+
+  function iniciarProgresso() {
+    clearInterval(progressInterval);
+    progressInterval = setInterval(function () {
+      if (!player || !player.getCurrentTime) return;
+      var atual   = player.getCurrentTime();
+      var total   = player.getDuration();
+      if (total > 0) {
+        var pct = (atual / total) * 100;
+        document.getElementById("progress-fill").style.width = pct + "%";
+      }
+    }, 500);
+  }
+
   function ativarCTA() {
+    clearInterval(progressInterval);
+    document.getElementById("progress-fill").style.width = "100%";
+
     var btn = document.getElementById("cta-btn");
     var sec = document.getElementById("cta-section");
 
     sec.style.display = "flex";
-    sec.getBoundingClientRect(); // força reflow para a animação disparar corretamente
+    sec.getBoundingClientRect();
     sec.classList.add("visible");
 
-    setTimeout(function () {
-      btn.classList.add("pulse");
-    }, 520);
+    setTimeout(function () { btn.classList.add("pulse"); }, 520);
 
     btn.addEventListener("click", function () {
       window.location.href = CHECKOUT_URL;
@@ -271,13 +354,21 @@
     }, 100);
   }
 
+  // Botão de play
+  document.getElementById("play-btn").addEventListener("click", function () {
+    if (player && player.playVideo) {
+      player.playVideo();
+    }
+    this.classList.add("oculto");
+  });
+
+  // Injeta a YouTube IFrame API
   (function () {
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
   })();
 
-  var player;
   window.onYouTubeIframeAPIReady = function () {
     player = new YT.Player("yt-player", {
       videoId: VIDEO_ID,
@@ -291,6 +382,12 @@
       },
       events: {
         onStateChange: function (e) {
+          if (e.data === YT.PlayerState.PLAYING) {
+            iniciarProgresso();
+          }
+          if (e.data === YT.PlayerState.PAUSED) {
+            clearInterval(progressInterval);
+          }
           if (e.data === YT.PlayerState.ENDED) {
             ativarCTA();
           }
