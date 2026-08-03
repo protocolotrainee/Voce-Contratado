@@ -353,7 +353,7 @@
   // ================================================
   // CONFIGURAÇÃO — troque estas duas constantes
   // ================================================
-  const VIDEO_ID     = "jNQXAC9IVRw";              // ID do vídeo no YouTube (ex: "dQw4w9WgXcQ")
+  const VIDEO_ID     = "yTmClXvThII";              // ID do vídeo no YouTube (ex: "dQw4w9WgXcQ")
   const CHECKOUT_URL = "PLACEHOLDER_CHECKOUT_URL"; // URL do checkout do upsell
   const DOWNSELL_URL = "PLACEHOLDER_DOWNSELL_URL"; // URL do downsell
   // ================================================
@@ -369,7 +369,7 @@
       var atual   = player.getCurrentTime();
       var total   = player.getDuration();
       if (total > 0) {
-        var pct = (atual / total) * 100;
+        var pct = Math.pow(atual / total, 0.5) * 100;
         document.getElementById("progress-fill").style.width = pct + "%";
       }
     }, 500);
