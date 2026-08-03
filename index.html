@@ -108,7 +108,7 @@
       line-height: 1.55;
     }
 
-    .warning-text .red {
+    .red {
       color: var(--red);
       font-weight: 600;
     }
@@ -260,6 +260,25 @@
       line-height: 1.5;
     }
 
+    .downsell-link {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      text-align: center;
+      text-decoration: underline;
+      padding: 4px 0;
+      line-height: 1.5;
+      animation: ctaEntrada 0.4s ease both;
+    }
+
+    .downsell-link:hover {
+      color: var(--ink-900);
+    }
+
     /* === Animações === */
     @keyframes ctaEntrada {
       from { opacity: 0; transform: translateY(8px); }
@@ -286,8 +305,8 @@
   <!-- Textos de abertura -->
   <div class="header-group">
     <h1 class="headline"><em>Espere!</em> Sua compra ainda não está concluída...</h1>
-    <p class="sub-headline">Para completar a compra, <strong>NÃO</strong> aperte "voltar", <strong>NÃO</strong> recarregue e nem feche esta página.</p>
-    <p class="warning-text">Você só vai ver essa página uma única vez. <span class="red">Assista o vídeo até o final</span>, essa condição não vai aparecer de novo.</p>
+    <p class="sub-headline"><span class="red">Assista o vídeo até o final</span> para completar sua compra. <strong>NÃO</strong> aperte "voltar", <strong>NÃO</strong> recarregue e nem feche esta página.</p>
+    <p class="warning-text"><em>Você só vai ver essa página uma única vez e essa condição não vai aparecer de novo!</em></p>
   </div>
 
   <!-- Player YouTube vertical (9:16) -->
@@ -323,6 +342,9 @@
     <p class="cta-hint">
       Garantia de 7 dias. Acesso imediato após a confirmação.
     </p>
+    <button class="downsell-link" id="downsell-btn" aria-label="Perder esta oportunidade">
+      Perder esta oportunidade
+    </button>
   </div>
 
 </div>
@@ -333,6 +355,7 @@
   // ================================================
   const VIDEO_ID     = "jNQXAC9IVRw";              // ID do vídeo no YouTube (ex: "dQw4w9WgXcQ")
   const CHECKOUT_URL = "PLACEHOLDER_CHECKOUT_URL"; // URL do checkout do upsell
+  const DOWNSELL_URL = "PLACEHOLDER_DOWNSELL_URL"; // URL do downsell
   // ================================================
 
   var player;
@@ -372,14 +395,36 @@
     setTimeout(function () {
       sec.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
+
+    setTimeout(function () {
+      var downsellBtn = document.getElementById("downsell-btn");
+      downsellBtn.style.display = "block";
+      downsellBtn.addEventListener("click", function () {
+        window.location.href = DOWNSELL_URL;
+      });
+    }, 5000);
   }
 
-  // Botão de play
-  document.getElementById("play-btn").addEventListener("click", function () {
+  // Botão de play — stopPropagation para não acionar o handler do overlay
+  document.getElementById("play-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
     if (player && player.playVideo) {
       player.playVideo();
     }
     this.classList.add("oculto");
+  });
+
+  // Overlay: clique pausa/retoma o vídeo
+  document.getElementById("video-overlay").addEventListener("click", function () {
+    if (!player || !player.getPlayerState) return;
+    var state = player.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+      player.pauseVideo();
+      document.getElementById("play-btn").classList.remove("oculto");
+    } else if (state === YT.PlayerState.PAUSED) {
+      player.playVideo();
+      document.getElementById("play-btn").classList.add("oculto");
+    }
   });
 
   // Injeta a YouTube IFrame API
