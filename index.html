@@ -282,6 +282,39 @@
       .cta-button.pulse    { animation: none; }
       .progress-fill       { transition: none; }
     }
+
+    /* === Desktop: fundo sutil + card === */
+    @media (min-width: 520px) {
+      body {
+        background-color: #f0f1f2;
+        padding: 32px 16px;
+      }
+      .page {
+        border-radius: 16px;
+        box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
+        padding-top: 48px;
+        padding-bottom: 72px;
+      }
+    }
+
+    /* === Telas muito pequenas (< 360px) === */
+    @media (max-width: 359px) {
+      .page {
+        padding-top: 28px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 48px;
+      }
+    }
+
+    /* === iOS: safe area para notch e home indicator === */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .page {
+        padding-left:   max(20px, env(safe-area-inset-left));
+        padding-right:  max(20px, env(safe-area-inset-right));
+        padding-bottom: max(64px, calc(env(safe-area-inset-bottom) + 32px));
+      }
+    }
   </style>
 </head>
 <body>
