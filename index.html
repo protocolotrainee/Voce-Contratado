@@ -352,6 +352,10 @@
     <button
       class="cta-button"
       id="cta-btn"
+      data-greenn-one-click="false"
+      data-greenn-upsell="6283"
+      data-greenn-split="1"
+      onclick="startLoading(this)"
       aria-label="Quero garantir minha vaga com desconto"
     >
       Quero garantir minha vaga com desconto
@@ -359,41 +363,50 @@
     <p class="cta-hint">
       Garantia de 7 dias. Acesso imediato após a confirmação.
     </p>
-    <button class="downsell-link" id="downsell-btn" aria-label="Perder esta oportunidade">
+    <a
+      class="downsell-link"
+      id="not-buy-link"
+      href="https://rqa.formuladaentrevista.com.br/obrigado"
+      aria-label="Perder esta oportunidade"
+    >
       Perder esta oportunidade
-    </button>
+    </a>
   </div>
 
 </div>
 
 <script>
   // ================================================
-  // CONFIGURAÇÃO — troque estas duas constantes
+  // CONFIGURAÇÃO
   // ================================================
-  const VIDEO_ID     = "yTmClXvThII";              // ID do vídeo no YouTube (ex: "dQw4w9WgXcQ")
-  const CHECKOUT_URL = "PLACEHOLDER_CHECKOUT_URL"; // URL do checkout do upsell
-  const DOWNSELL_URL = "PLACEHOLDER_DOWNSELL_URL"; // URL do downsell
+  const VIDEO_ID = "yTmClXvThII"; // ID do vídeo no YouTube
   // ================================================
 
   var player;
   var progressInterval = null;
+  var ctaAtivado = false;
+
+  var CTA_TEMPO = 325; // segundos — botão aparece aos 5:25
 
   function iniciarProgresso() {
     clearInterval(progressInterval);
     progressInterval = setInterval(function () {
       if (!player || !player.getCurrentTime) return;
-      var atual   = player.getCurrentTime();
-      var total   = player.getDuration();
+      var atual = player.getCurrentTime();
+      var total = player.getDuration();
       if (total > 0) {
-        var pct = Math.pow(atual / total, 0.5) * 100;
+        var pct = Math.pow(atual / total, 0.65) * 100;
         document.getElementById("progress-fill").style.width = pct + "%";
+        if (atual >= CTA_TEMPO && !ctaAtivado) {
+          ativarCTA();
+        }
       }
     }, 500);
   }
 
   function ativarCTA() {
-    clearInterval(progressInterval);
-    document.getElementById("progress-fill").style.width = "100%";
+    if (ctaAtivado) return;
+    ctaAtivado = true;
 
     var btn = document.getElementById("cta-btn");
     var sec = document.getElementById("cta-section");
@@ -404,20 +417,12 @@
 
     setTimeout(function () { btn.classList.add("pulse"); }, 520);
 
-    btn.addEventListener("click", function () {
-      window.location.href = CHECKOUT_URL;
-    });
-
     setTimeout(function () {
       sec.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
 
     setTimeout(function () {
-      var downsellBtn = document.getElementById("downsell-btn");
-      downsellBtn.style.display = "block";
-      downsellBtn.addEventListener("click", function () {
-        window.location.href = DOWNSELL_URL;
-      });
+      document.getElementById("not-buy-link").style.display = "block";
     }, 5000);
   }
 
@@ -473,12 +478,40 @@
             clearInterval(progressInterval);
           }
           if (e.data === YT.PlayerState.ENDED) {
+            clearInterval(progressInterval);
+            document.getElementById("progress-fill").style.width = "100%";
             ativarCTA();
           }
         }
       }
     });
   };
+</script>
+
+<script>
+  window.startLoading = function(button) {
+    const originalHTML = button.innerHTML;
+    button.setAttribute('data-loading', 'true');
+    button.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+        <path fill="#ffffff" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
+        <path fill="#ffffff" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
+          <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+        </path>
+      </svg>`;
+    setTimeout(() => {
+      button.setAttribute('data-loading', 'false');
+      button.innerHTML = originalHTML;
+    }, 3000);
+  };
+  (function (w, d, s, t) {
+    if (w._greennUp) return;
+    w._greennUp = t;
+    var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+    j.async = true;
+    j.src = "https://payfast.greenn.com.br/assets/upsell.js?v=" + t;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", Date.now());
 </script>
 
 </body>
