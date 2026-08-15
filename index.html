@@ -316,6 +316,20 @@
       }
     }
   </style>
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2066578667489577');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -385,6 +399,7 @@
   var player;
   var progressInterval = null;
   var ctaAtivado = false;
+  var videoMilestones = {10: false, 25: false, 50: false, 75: false, 90: false};
 
   var CTA_TEMPO = 325; // segundos — botão aparece aos 5:25
 
@@ -400,6 +415,13 @@
         if (atual >= CTA_TEMPO && !ctaAtivado) {
           ativarCTA();
         }
+        var pctReal = (atual / total) * 100;
+        [10, 25, 50, 75, 90].forEach(function (m) {
+          if (!videoMilestones[m] && pctReal >= m) {
+            videoMilestones[m] = true;
+            if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoProgress', {percent: m});
+          }
+        });
       }
     }, 500);
   }
@@ -420,6 +442,10 @@
     setTimeout(function () {
       sec.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
+
+    btn.addEventListener("click", function () {
+      if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+    });
 
     setTimeout(function () {
       document.getElementById("not-buy-link").style.display = "block";
