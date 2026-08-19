@@ -265,6 +265,95 @@
       color: var(--ink-900);
     }
 
+    /* === Bloco de reforço === */
+    .reinforcement-block {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-top: 24px;
+      border-top: 1px solid var(--ink-200);
+    }
+
+    .reinforcement-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .reinforcement-body {
+      font-size: clamp(0.9375rem, 3.5vw, 1.0625rem);
+      line-height: 1.7;
+      color: var(--color-text);
+    }
+
+    .method-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-left: 2px solid var(--ink-200);
+      padding-left: 20px;
+    }
+
+    .method-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .method-letter {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      color: var(--color-text-on-accent);
+      font-weight: 800;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .method-content { font-size: 0.9375rem; line-height: 1.55; }
+    .method-content strong { font-weight: 700; color: var(--color-text); display: block; }
+    .method-content span  { color: var(--ink-500); }
+
+    .price-block {
+      text-align: center;
+      padding: 24px 20px;
+      border: 1px solid var(--ink-200);
+      border-radius: var(--radius-md);
+      background: #f2f5f5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .price-old {
+      font-size: 0.9375rem;
+      color: var(--ink-500);
+      text-decoration: line-through;
+    }
+
+    .price-new {
+      font-family: var(--font-serif-display);
+      font-size: clamp(2.25rem, 10vw, 3rem);
+      font-weight: 600;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .price-label {
+      font-size: 0.8125rem;
+      color: var(--ink-500);
+      margin-top: 2px;
+    }
+
     /* === Animações === */
     @keyframes ctaEntrada {
       from { opacity: 0; transform: translateY(8px); }
@@ -363,6 +452,8 @@
 
   <!-- CTA — aparece aos 5:25 -->
   <div class="cta-section" id="cta-section">
+
+    <!-- Botão 1: impulso imediato -->
     <button
       class="cta-button"
       id="cta-btn"
@@ -370,9 +461,63 @@
     >
       Quero garantir minha vaga com desconto
     </button>
-    <p class="cta-hint">
-      Garantia de 7 dias. Acesso imediato após a confirmação.
-    </p>
+    <p class="cta-hint">Garantia de 7 dias. Acesso imediato após a confirmação.</p>
+
+    <!-- Bloco de reforço -->
+    <div class="reinforcement-block">
+      <p class="reinforcement-eyebrow">O que você leva hoje</p>
+      <p class="reinforcement-body">Além do que você já aprendeu com o Respostas que Aprovam, o Você Contratado te dá o método completo para dominar todo o processo seletivo, da primeira impressão até a aprovação.</p>
+
+      <ul class="method-list">
+        <li>
+          <span class="method-letter">V</span>
+          <div class="method-content">
+            <strong>Vitrine</strong>
+            <span>Um perfil que faz os recrutadores chegarem até você</span>
+          </div>
+        </li>
+        <li>
+          <span class="method-letter">O</span>
+          <div class="method-content">
+            <strong>Oportunidades Ocultas</strong>
+            <span>Vagas que nunca aparecem nos sites de emprego</span>
+          </div>
+        </li>
+        <li>
+          <span class="method-letter">C</span>
+          <div class="method-content">
+            <strong>Conteúdo</strong>
+            <span>As respostas certas para brilhar em qualquer entrevista</span>
+          </div>
+        </li>
+        <li>
+          <span class="method-letter">E</span>
+          <div class="method-content">
+            <strong>Entrega</strong>
+            <span>Sua linguagem corporal na hora que mais importa</span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="reinforcement-body">Para completar, você vai ter ferramentas de IA que trabalham por você. Elas montam o seu LinkedIn do zero com base nas suas informações e te preparam para as entrevistas de emprego.</p>
+
+      <div class="price-block">
+        <span class="price-old">De R$497</span>
+        <span class="price-new">R$297</span>
+        <span class="price-label">condição exclusiva para quem já é aluno de Respostas que Aprovam</span>
+      </div>
+    </div>
+
+    <!-- Botão 2: decisão após leitura -->
+    <button
+      class="cta-button"
+      id="cta-btn-2"
+      aria-label="Quero garantir minha vaga com desconto"
+    >
+      Quero garantir minha vaga com desconto
+    </button>
+    <p class="cta-hint">Garantia de 7 dias. Acesso imediato após a confirmação.</p>
+
     <a
       class="downsell-link"
       id="not-buy-link"
@@ -441,6 +586,11 @@
     }, 100);
 
     btn.addEventListener("click", function () {
+      if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+      window.location.href = CHECKOUT_URL;
+    });
+
+    document.getElementById("cta-btn-2").addEventListener("click", function () {
       if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
       window.location.href = CHECKOUT_URL;
     });
