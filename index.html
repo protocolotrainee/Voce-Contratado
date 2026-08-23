@@ -568,7 +568,7 @@
         [10, 25, 50, 75, 90].forEach(function (m) {
           if (!videoMilestones[m] && pctReal >= m) {
             videoMilestones[m] = true;
-            if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoProgress', {percent: m});
+            if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoProgress' + m);
           }
         });
       }
@@ -578,6 +578,7 @@
   function ativarCTA() {
     if (ctaAtivado) return;
     ctaAtivado = true;
+    if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoPitch');
 
     var btn = document.getElementById("cta-btn");
     var sec = document.getElementById("cta-section");
