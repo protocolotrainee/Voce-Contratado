@@ -598,7 +598,10 @@
     });
 
     setTimeout(function () {
-      document.getElementById("not-buy-link").style.display = "block";
+      var link = document.getElementById("not-buy-link");
+      var params = window.location.search;
+      if (params) link.href = 'https://oferta1.formuladaentrevista.com.br/Downsell' + params;
+      link.style.display = "block";
     }, 5000);
   }
 
