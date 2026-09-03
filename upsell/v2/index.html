@@ -56,12 +56,12 @@
        DOBRA 1 — Cabeçalho + Introdução (gradiente teal contínuo)
     ============================================================ */
     .dobra-1 {
-      background: linear-gradient(170deg, #d6e7e9 0%, #e8f2f3 40%, #f3f8f8 100%);
+      background: var(--paper);
       padding: 44px 20px 24px;
       display: flex;
       flex-direction: column;
       gap: 0;
-      border-bottom: 1px solid #c0d5d8;
+      border-bottom: 1px solid var(--ink-200);
     }
 
     /* Cabeçalho */
@@ -70,7 +70,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      padding-bottom: 36px;
+      padding-bottom: 16px;
     }
 
     .confirmed-badge {
@@ -90,7 +90,7 @@
 
     .headline {
       font-family: var(--font-serif);
-      font-size: clamp(1.125rem, 5vw, 1.5rem);
+      font-size: clamp(1.375rem, 6vw, 1.875rem);
       font-weight: 600;
       line-height: 1.25;
       text-wrap: balance;
@@ -109,11 +109,6 @@
       font-weight: 500;
     }
 
-    .headline em {
-      font-style: italic;
-      color: var(--red);
-      font-weight: 500;
-    }
 
     /* Introdução — mesma dobra, separada por linha sutil */
     .intro-inner {
@@ -304,11 +299,10 @@
       align-items: center;
       gap: 8px;
       font-size: 0.6875rem;
-      font-weight: 700;
-      color: var(--color-accent);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 20px 20px 12px;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--red);
+      padding: 8px 20px 10px;
       background: transparent;
     }
 
@@ -658,7 +652,7 @@
         </svg>
         Parabéns pela compra!
       </div>
-      <h1 class="headline">Antes de acessar o Respostas que Aprovam, <em>quero te contar uma coisa rápida.</em></h1>
+      <h1 class="headline">Antes de acessar o Respostas que Aprovam, quero te contar uma coisa rápida.</h1>
     </div>
 
     <!-- Rótulo da VSL -->
@@ -874,19 +868,6 @@
   document.getElementById("play-btn").addEventListener("click", function (e) {
     e.stopPropagation();
     if (player && player.playVideo) player.playVideo();
-    this.classList.add("oculto");
-  });
-
-  document.getElementById("video-overlay").addEventListener("click", function () {
-    if (!player || !player.getPlayerState) return;
-    var state = player.getPlayerState();
-    if (state === YT.PlayerState.PLAYING) {
-      player.pauseVideo();
-      document.getElementById("play-btn").classList.remove("oculto");
-    } else if (state === YT.PlayerState.PAUSED) {
-      player.playVideo();
-      document.getElementById("play-btn").classList.add("oculto");
-    }
   });
 
   (function () {
@@ -909,8 +890,17 @@
       events: {
         onReady: function (e) { e.target.unloadModule('captions'); e.target.setPlaybackQuality('hd720'); },
         onStateChange: function (e) {
-          if (e.data === YT.PlayerState.PLAYING) iniciarProgresso();
-          if (e.data === YT.PlayerState.PAUSED)  clearInterval(progressInterval);
+          if (e.data === YT.PlayerState.PLAYING) {
+            iniciarProgresso();
+            var overlay = document.getElementById("video-overlay");
+            overlay.style.display = "none";
+          }
+          if (e.data === YT.PlayerState.PAUSED) {
+            clearInterval(progressInterval);
+            var overlay = document.getElementById("video-overlay");
+            overlay.style.display = "flex";
+            document.getElementById("play-btn").classList.remove("oculto");
+          }
           if (e.data === YT.PlayerState.ENDED) {
             clearInterval(progressInterval);
             document.getElementById("progress-fill").style.width = "100%";
