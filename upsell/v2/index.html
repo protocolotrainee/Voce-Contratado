@@ -77,15 +77,15 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      background: var(--paper);
-      border: 1px solid #c4d8da;
+      background: #f0f9f4;
+      border: 1px solid #a8d5b5;
       border-radius: 100px;
       padding: 6px 14px;
       font-size: 0.8125rem;
       font-weight: 600;
-      color: var(--color-accent);
+      color: #1a7a4a;
       align-self: center;
-      box-shadow: 0 1px 6px rgba(23,76,83,0.1);
+      box-shadow: 0 1px 6px rgba(26,122,74,0.12);
     }
 
     .headline {
@@ -295,31 +295,14 @@
        Rótulo + Player de vídeo
     ============================================================ */
     .video-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.6875rem;
+      display: block;
+      text-align: center;
+      font-size: 0.8125rem;
       font-weight: 600;
       font-style: italic;
       color: var(--red);
       padding: 8px 20px 10px;
       background: transparent;
-    }
-
-    .video-label::before {
-      content: '';
-      display: block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--red);
-      animation: blink 1.6s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.15; }
     }
 
     .video-wrapper {
@@ -363,11 +346,11 @@
       cursor: pointer;
       color: var(--ink-900);
       padding-left: 4px;
-      transition: transform 0.15s ease, background 0.15s ease, opacity 0.3s ease;
+      transition: transform 0.15s ease, background 0.15s ease;
     }
 
     .play-btn:hover   { transform: scale(1.08); background: #ffffff; }
-    .play-btn.oculto  { opacity: 0; pointer-events: none; }
+    .play-btn.oculto  { opacity: 0; pointer-events: none; transition: none; }
 
     .progress-container {
       width: 100%;
@@ -647,16 +630,16 @@
     <div class="header-inner">
       <div class="confirmed-badge">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="7" fill="#174c53"/>
+          <circle cx="7" cy="7" r="7" fill="#1a7a4a"/>
           <path d="M3.5 7L5.8 9.5L10.5 4.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Parabéns pela compra!
       </div>
-      <h1 class="headline">Antes de acessar o Respostas que Aprovam, quero te contar uma coisa rápida.</h1>
+      <h1 class="headline">Antes de acessar o Respostas que Aprovam, quero te mostrar uma coisa rápida.</h1>
     </div>
 
     <!-- Rótulo da VSL -->
-    <div class="video-label">Assista agora. Você só verá esse vídeo uma vez.</div>
+    <div class="video-label">Você só verá esse vídeo uma vez.</div>
 
     <!-- Player de vídeo -->
     <div class="video-wrapper">
@@ -870,6 +853,16 @@
     if (player && player.playVideo) player.playVideo();
   });
 
+  document.getElementById("video-overlay").addEventListener("click", function () {
+    if (!player || !player.getPlayerState) return;
+    var state = player.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+      player.pauseVideo();
+    } else if (state === YT.PlayerState.PAUSED) {
+      player.playVideo();
+    }
+  });
+
   (function () {
     var tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -892,13 +885,10 @@
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) {
             iniciarProgresso();
-            var overlay = document.getElementById("video-overlay");
-            overlay.style.display = "none";
+            document.getElementById("play-btn").classList.add("oculto");
           }
           if (e.data === YT.PlayerState.PAUSED) {
             clearInterval(progressInterval);
-            var overlay = document.getElementById("video-overlay");
-            overlay.style.display = "flex";
             document.getElementById("play-btn").classList.remove("oculto");
           }
           if (e.data === YT.PlayerState.ENDED) {
