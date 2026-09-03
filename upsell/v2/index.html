@@ -57,7 +57,7 @@
     ============================================================ */
     .dobra-1 {
       background: linear-gradient(170deg, #d6e7e9 0%, #e8f2f3 40%, #f3f8f8 100%);
-      padding: 44px 20px 44px;
+      padding: 44px 20px 24px;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -90,9 +90,9 @@
 
     .headline {
       font-family: var(--font-serif);
-      font-size: clamp(1.75rem, 8vw, 2.375rem);
+      font-size: clamp(1.125rem, 5vw, 1.5rem);
       font-weight: 600;
-      line-height: 1.18;
+      line-height: 1.25;
       text-wrap: balance;
     }
 
@@ -104,6 +104,12 @@
     }
 
     .sub-headline em {
+      font-style: italic;
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    .headline em {
       font-style: italic;
       color: var(--red);
       font-weight: 500;
@@ -297,13 +303,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.8125rem;
+      font-size: 0.6875rem;
       font-weight: 700;
       color: var(--color-accent);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       padding: 20px 20px 12px;
-      background: var(--paper);
+      background: transparent;
     }
 
     .video-label::before {
@@ -507,9 +513,9 @@
       .page { max-width: 1120px; border-radius: 20px; }
 
       /* Hero — centralizado, tipografia maior */
-      .dobra-1 { padding: 72px 64px 56px; }
+      .dobra-1 { padding: 72px 64px 24px; }
       .header-inner { max-width: 720px; margin: 0 auto; }
-      .headline { font-size: clamp(2.75rem, 4vw, 3.75rem); }
+      .headline { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
       .sub-headline { font-size: 1.125rem; }
 
       /* Seção do diagrama — coluna única, mais espaço */
@@ -641,7 +647,7 @@
 
 <div class="page">
 
-  <!-- DOBRA 1 — Cabeçalho + Introdução -->
+  <!-- DOBRA 1 — Cabeçalho + VSL -->
   <div class="dobra-1">
 
     <div class="header-inner">
@@ -650,34 +656,29 @@
           <circle cx="7" cy="7" r="7" fill="#174c53"/>
           <path d="M3.5 7L5.8 9.5L10.5 4.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        Compra confirmada
+        Parabéns pela compra!
       </div>
-      <h1 class="headline">Parabéns! Você acabou de garantir o Respostas que Aprovam.</h1>
-      <p class="sub-headline">
-        O guia vai te ajudar a responder com mais segurança nas suas entrevistas de emprego.
-        <em>Mas antes de acessar o material, quero te mostrar uma coisa rápida.</em>
-      </p>
+      <h1 class="headline">Antes de acessar o Respostas que Aprovam, <em>quero te contar uma coisa rápida.</em></h1>
     </div>
 
+    <!-- Rótulo da VSL -->
+    <div class="video-label">Assista agora. Você só verá esse vídeo uma vez.</div>
 
-  </div>
-
-  <!-- Rótulo da VSL -->
-  <div class="video-label">Assista agora</div>
-
-  <!-- Player de vídeo -->
-  <div class="video-wrapper">
-    <div id="yt-player"></div>
-    <div class="video-overlay" id="video-overlay">
-      <button class="play-btn" id="play-btn" aria-label="Reproduzir vídeo">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </button>
+    <!-- Player de vídeo -->
+    <div class="video-wrapper">
+      <div id="yt-player"></div>
+      <div class="video-overlay" id="video-overlay">
+        <button class="play-btn" id="play-btn" aria-label="Reproduzir vídeo">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="progress-container">
-    <div class="progress-fill" id="progress-fill"></div>
+    <div class="progress-container">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
   </div>
 
   <!-- CTA — oculto até o pitch -->
@@ -708,8 +709,8 @@
     </div>
   </div>
 
-  <!-- DOBRA 2 — Diagrama + Transição -->
-  <div class="dobra-2">
+  <!-- DOBRA 2 — Diagrama + Transição (aparece no pitch) -->
+  <div class="dobra-2" id="dobra-2" style="display:none">
 
     <div class="journey-section">
       <p class="intro-text" style="margin-bottom: 16px;">Saber responder bem na entrevista é essencial, mas é só uma parte da jornada entre você e seu próximo emprego.</p>
@@ -847,6 +848,9 @@
     var btn = document.getElementById("cta-btn");
     var sec = document.getElementById("cta-section");
 
+    var dobra2 = document.getElementById("dobra-2");
+    if (dobra2) dobra2.style.display = "block";
+
     sec.style.display = "flex";
     sec.getBoundingClientRect();
     sec.classList.add("visible");
@@ -903,7 +907,7 @@
         playsinline:    1
       },
       events: {
-        onReady: function (e) { e.target.unloadModule('captions'); },
+        onReady: function (e) { e.target.unloadModule('captions'); e.target.setPlaybackQuality('hd720'); },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) iniciarProgresso();
           if (e.data === YT.PlayerState.PAUSED)  clearInterval(progressInterval);
