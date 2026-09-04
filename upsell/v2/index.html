@@ -323,8 +323,37 @@
       height: calc(100% + 160px);
       border: 0;
       display: block;
+      /* Iframe nasce invisível: elemento com opacity 0 não pinta nada, nem em
+         camada de composição própria, que é onde z-index deixa de valer. */
+      opacity: 0;
     }
 
+    .video-wrapper.tocando iframe { opacity: 1; }
+
+    /* Facade: cobre o iframe com thumbnail antes de o vídeo iniciar */
+    .video-facade {
+      position: absolute;
+      inset: 0;
+      z-index: 11;
+      background: #0a0a0a;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-facade img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-facade .play-btn { position: relative; z-index: 1; }
+    .video-facade.oculto { display: none; }
+
+    /* Overlay: transparente enquanto toca, semi-transparente ao pausar */
     .video-overlay {
       position: absolute;
       inset: 0;
@@ -335,6 +364,8 @@
       pointer-events: all;
       touch-action: none;
     }
+
+    .video-overlay.pausado { background: rgba(0,0,0,0.4); }
 
     .play-btn {
       width: 72px;
@@ -351,8 +382,8 @@
       transition: transform 0.15s ease, background 0.15s ease;
     }
 
-    .play-btn:hover   { transform: scale(1.08); background: #ffffff; }
-    .play-btn.oculto  { opacity: 0; pointer-events: none; transition: none; }
+    .play-btn:hover  { transform: scale(1.08); background: #ffffff; }
+    .play-btn.oculto { opacity: 0; pointer-events: none; }
 
     .progress-container {
       width: 100%;
@@ -644,10 +675,21 @@
     <div class="video-label">ATENÇÃO: Você só verá esse vídeo uma vez.</div>
 
     <!-- Player de vídeo -->
-    <div class="video-wrapper">
+    <div class="video-wrapper" id="video-wrapper">
+      <!-- Vira iframe só no clique do play (ver criarPlayer) -->
       <div id="yt-player"></div>
-      <div class="video-overlay" id="video-overlay">
+      <!-- Facade: thumbnail de alta qualidade, some só quando PLAYING dispara -->
+      <div id="video-facade" class="video-facade">
+        <img src="https://i.ytimg.com/vi/yTmClXvThII/maxresdefault.jpg" alt="" aria-hidden="true" />
         <button class="play-btn" id="play-btn" aria-label="Reproduzir vídeo">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Overlay: intercepta cliques após o vídeo iniciar -->
+      <div id="video-overlay" class="video-overlay">
+        <button class="play-btn oculto" id="overlay-play-btn" aria-label="Retomar vídeo">
           <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
             <path d="M8 5v14l11-7z"/>
           </svg>
@@ -794,6 +836,10 @@
   var player;
   var progressInterval = null;
   var ctaAtivado = false;
+  var hasPlayedOnce = false;
+  var apiPronta = false;
+  var cliquePendente = false;
+  var playerCriado = false;
   var videoMilestones = {10: false, 25: false, 50: false, 75: false, 90: false};
 
   function iniciarProgresso() {
@@ -852,7 +898,10 @@
 
   document.getElementById("play-btn").addEventListener("click", function (e) {
     e.stopPropagation();
-    if (player && player.playVideo) player.playVideo();
+    this.classList.add("oculto"); // esconde play imediatamente; facade continua cobrindo
+    if (playerCriado) player.playVideo();
+    else if (apiPronta) criarPlayer();
+    else cliquePendente = true;
   });
 
   document.getElementById("video-overlay").addEventListener("click", function () {
@@ -872,9 +921,20 @@
   })();
 
   window.onYouTubeIframeAPIReady = function () {
+    apiPronta = true;
+    if (cliquePendente) criarPlayer();
+  };
+
+  // O player só é criado no clique do play, já com autoplay ligado. Como não existe
+  // transição "pausado -> tocando", o YouTube não desenha o indicador de pause.
+  function criarPlayer() {
+    if (playerCriado) return;
+    playerCriado = true;
+
     player = new YT.Player("yt-player", {
       videoId: VIDEO_ID,
       playerVars: {
+        autoplay:       1,
         controls:       0,
         modestbranding: 1,
         rel:            0,
@@ -883,26 +943,50 @@
         playsinline:    1
       },
       events: {
-        onReady: function (e) { e.target.unloadModule('captions'); e.target.setPlaybackQuality('hd720'); },
+        onReady: function (e) {
+          e.target.unloadModule('captions');
+          e.target.setPlaybackQuality('hd720');
+          e.target.playVideo();
+          // Se o autoplay for bloqueado, devolve o botão em vez de travar a página.
+          setTimeout(function () {
+            if (!hasPlayedOnce && player.getPlayerState() !== YT.PlayerState.BUFFERING) {
+              document.getElementById("play-btn").classList.remove("oculto");
+            }
+          }, 4000);
+        },
         onStateChange: function (e) {
+          var wrapper    = document.getElementById("video-wrapper");
+          var facade     = document.getElementById("video-facade");
+          var overlay    = document.getElementById("video-overlay");
+          var overlayBtn = document.getElementById("overlay-play-btn");
+
           if (e.data === YT.PlayerState.PLAYING) {
             iniciarProgresso();
-            document.getElementById("play-btn").classList.add("oculto");
+            wrapper.classList.add("tocando");     // revela o iframe
+            facade.classList.add("oculto");       // remove thumbnail definitivamente
+            overlay.classList.remove("pausado");  // overlay transparente
+            overlayBtn.classList.add("oculto");   // esconde play
+            hasPlayedOnce = true;
           }
           if (e.data === YT.PlayerState.PAUSED) {
             clearInterval(progressInterval);
-            document.getElementById("play-btn").classList.remove("oculto");
+            if (hasPlayedOnce) {
+              overlay.classList.add("pausado");      // fundo semi-transparente
+              overlayBtn.classList.remove("oculto"); // mostra play
+            }
           }
           if (e.data === YT.PlayerState.ENDED) {
             clearInterval(progressInterval);
             document.getElementById("progress-fill").style.width = "100%";
+            overlay.classList.remove("pausado");
+            overlayBtn.classList.add("oculto");
             if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoComplete');
             ativarCTA();
           }
         }
       }
     });
-  };
+  }
 
   window.startLoading = function (button) {
     if (button.getAttribute('data-loading') === 'true') return;
