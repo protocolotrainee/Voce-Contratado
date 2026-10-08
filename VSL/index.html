@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Sem a barra no fim do endereço (ex.: /VSL), o navegador procura as imagens no lugar errado.
+// Leva para o mesmo endereço com barra (/VSL/), mantendo UTMs, fbclid e âncoras.
+(function () {
+  var p = location.pathname;
+  if (location.protocol.indexOf('http') === 0 && p.slice(-1) !== '/' && !/\.[a-z0-9]+$/i.test(p)) {
+    window.__vcRedirecionando = true;
+    location.replace(p + '/' + location.search + location.hash);
+  }
+})();
+</script>
 <title>Você Contratado</title>
 <meta name="description" content="Descubra como conseguir o seu próximo emprego em até 8 semanas com o Método VOCE.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -384,7 +395,7 @@ a:hover{color:var(--color-link-hover)}
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '2066578667489577');
-  fbq('track', 'PageView');
+  if (!window.__vcRedirecionando) fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
