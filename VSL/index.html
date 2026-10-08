@@ -4,15 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
-// Sem a barra no fim do endereço (ex.: /VSL), o navegador procura as imagens no lugar errado.
-// Leva para o mesmo endereço com barra (/VSL/), mantendo UTMs, fbclid e âncoras.
-(function () {
-  var p = location.pathname;
-  if (location.protocol.indexOf('http') === 0 && p.slice(-1) !== '/' && !/\.[a-z0-9]+$/i.test(p)) {
-    window.__vcRedirecionando = true;
-    location.replace(p + '/' + location.search + location.hash);
-  }
-})();
+// As imagens usam o caminho completo /VSL/assets/..., que funciona com ou sem barra no fim do endereço.
+// Só ao abrir o arquivo direto no computador (sem servidor) o caminho é trocado para assets/..., para a prévia local funcionar.
+if (location.protocol === 'file:') {
+  new MutationObserver(function (mudancas) {
+    mudancas.forEach(function (m) {
+      m.addedNodes.forEach(function (n) {
+        if (n.tagName === 'IMG') {
+          var s = n.getAttribute('src');
+          if (s && s.indexOf('/VSL/assets/') === 0) n.setAttribute('src', s.slice(5));
+        }
+      });
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+}
 </script>
 <title>Você Contratado</title>
 <meta name="description" content="Descubra como conseguir o seu próximo emprego em até 8 semanas com o Método VOCE.">
@@ -395,7 +400,7 @@ a:hover{color:var(--color-link-hover)}
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '2066578667489577');
-  if (!window.__vcRedirecionando) fbq('track', 'PageView');
+  fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
@@ -534,41 +539,41 @@ a:hover{color:var(--color-link-hover)}
 
     <div class="proofs">
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/amanda.webp" alt="Foto de Amanda"></div><span class="proof__name">Amanda</span><img class="co-logo" style="height:21px" src="assets/depoimentos/logos/vale.webp" alt="Vale"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/amanda.webp" alt="Foto de Amanda"></div><span class="proof__name">Amanda</span><img class="co-logo" style="height:21px" src="/VSL/assets/depoimentos/logos/vale.webp" alt="Vale"></div>
         <p class="proof__desc">Aprovada como engenheira na Vale.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-04-amanda.webp" alt="Print da mensagem de Amanda" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-04-amanda.webp" alt="Print da mensagem de Amanda" loading="lazy"></div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/renzo.webp" alt="Foto de Renzo"></div><span class="proof__name">Renzo</span><img class="co-logo" style="height:24px" src="assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/renzo.webp" alt="Foto de Renzo"></div><span class="proof__name">Renzo</span><img class="co-logo" style="height:24px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
         <p class="proof__desc">Convite para Jovem Executivo, principal programa de entrada na maior empresa de celulose do mundo.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-02-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-02-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/ana.webp" alt="Foto de Ana"></div><span class="proof__name">Ana</span><img class="co-logo" style="height:15px" src="assets/depoimentos/logos/nipponkoei.webp" alt="Nippon Koei"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/ana.webp" alt="Foto de Ana"></div><span class="proof__name">Ana</span><img class="co-logo" style="height:15px" src="/VSL/assets/depoimentos/logos/nipponkoei.webp" alt="Nippon Koei"></div>
         <p class="proof__desc">Abordada por uma empresa no LinkedIn 3 dias depois de ajustar o perfil.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-01-ana.webp" alt="Print da mensagem de Ana" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-01-ana.webp" alt="Print da mensagem de Ana" loading="lazy"></div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/barbara.webp" alt="Foto de Bárbara"></div><span class="proof__name">Bárbara</span><img class="co-logo" style="height:17px" src="assets/depoimentos/logos/jsl.webp" alt="JSL"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/barbara.webp" alt="Foto de Bárbara"></div><span class="proof__name">Bárbara</span><img class="co-logo" style="height:17px" src="/VSL/assets/depoimentos/logos/jsl.webp" alt="JSL"></div>
         <p class="proof__desc">Aprovada no trainee da JSL. O CEO ligou por vídeo para contar.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-05-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-05-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/thais.webp" alt="Foto de Thais"></div><span class="proof__name">Thais</span><img class="co-logo" style="height:24px" src="assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/thais.webp" alt="Foto de Thais"></div><span class="proof__name">Thais</span><img class="co-logo" style="height:24px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
         <p class="proof__desc">Aprovada no trainee da Suzano.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-06-thais.webp" alt="Print da mensagem de Thais" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-06-thais.webp" alt="Print da mensagem de Thais" loading="lazy"></div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="assets/depoimentos/avatars/bruno.webp" alt="Foto de Bruno"></div><span class="proof__name">Bruno</span><img class="co-logo" style="height:16px" src="assets/depoimentos/logos/liguelead.webp" alt="Ligue Lead"></div>
+        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/bruno.webp" alt="Foto de Bruno"></div><span class="proof__name">Bruno</span><img class="co-logo" style="height:16px" src="/VSL/assets/depoimentos/logos/liguelead.webp" alt="Ligue Lead"></div>
         <p class="proof__desc">Depois de vários currículos e negativas, aprovado como Especialista Comercial.</p>
-        <div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-07-bruno.webp" alt="Print da mensagem de Bruno" loading="lazy"></div>
+        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-07-bruno.webp" alt="Print da mensagem de Bruno" loading="lazy"></div>
       </figure>
     </div>
 
     <h3 class="h3 carousel__title">E muitos mais</h3>
     <div class="carousel" aria-label="Mais prints de alunos">
       <div class="carousel__track" tabindex="0">
-        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-03-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Renzo</strong></span>Vaga 100% remota, com salário em dólar.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-08-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div><figcaption><span class="proof__who"><strong>Bárbara</strong></span>Aprovada no trainee da Romi.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-09-mateus.webp" alt="Print da mensagem de Mateus" loading="lazy"></div><figcaption><span class="proof__who"><strong>Mateus</strong></span>Selecionado para a penúltima etapa do CEO por Um Mês, da Adecco.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-10-max.webp" alt="Print da mensagem de Max" loading="lazy"></div><figcaption><span class="proof__who"><strong>Max</strong></span>Aprovado como Analista de RH, com salário acima do que esperava.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-11-ubaldo.webp" alt="Print da mensagem de Ubaldo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ubaldo</strong></span>Contratado na primeira entrevista depois do curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-12-aureline.webp" alt="Print da mensagem de Aureline" loading="lazy"></div><figcaption><span class="proof__who"><strong>Aureline</strong></span>Aprovada fazendo exatamente o que aprendeu no curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-13-diogo.webp" alt="Print da mensagem de Diogo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Diogo</strong></span>Duas entrevistas, duas propostas na mesa.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="assets/depoimentos/prints/print-14-manuelly.webp" alt="Print da mensagem de Manuelly" loading="lazy"></div><figcaption><span class="proof__who"><strong>Manuelly</strong></span>Contrato assinado depois de uma entrevista tranquila e objetiva.</figcaption></figure>      </div>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-03-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Renzo</strong></span>Vaga 100% remota, com salário em dólar.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-08-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div><figcaption><span class="proof__who"><strong>Bárbara</strong></span>Aprovada no trainee da Romi.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-09-mateus.webp" alt="Print da mensagem de Mateus" loading="lazy"></div><figcaption><span class="proof__who"><strong>Mateus</strong></span>Selecionado para a penúltima etapa do CEO por Um Mês, da Adecco.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-10-max.webp" alt="Print da mensagem de Max" loading="lazy"></div><figcaption><span class="proof__who"><strong>Max</strong></span>Aprovado como Analista de RH, com salário acima do que esperava.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-11-ubaldo.webp" alt="Print da mensagem de Ubaldo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ubaldo</strong></span>Contratado na primeira entrevista depois do curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-12-aureline.webp" alt="Print da mensagem de Aureline" loading="lazy"></div><figcaption><span class="proof__who"><strong>Aureline</strong></span>Aprovada fazendo exatamente o que aprendeu no curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-13-diogo.webp" alt="Print da mensagem de Diogo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Diogo</strong></span>Duas entrevistas, duas propostas na mesa.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-14-manuelly.webp" alt="Print da mensagem de Manuelly" loading="lazy"></div><figcaption><span class="proof__who"><strong>Manuelly</strong></span>Contrato assinado depois de uma entrevista tranquila e objetiva.</figcaption></figure>      </div>
       <div class="carousel__nav">
         <button class="carousel__btn" type="button" data-dir="-1" aria-label="Prints anteriores"><svg class="ico"><use href="#i-chevron-left"/></svg></button>
         <button class="carousel__btn" type="button" data-dir="1" aria-label="Próximos prints"><svg class="ico"><use href="#i-chevron-right"/></svg></button>
@@ -634,7 +639,7 @@ a:hover{color:var(--color-link-hover)}
   <div class="container">
     <h2 class="h2">Conheça seu professor</h2>
     <div class="expert">
-      <div class="photo photo--real"><img src="assets/autoridade/professor.webp" alt="Foto do professor do Você Contratado"></div>
+      <div class="photo photo--real"><img src="/VSL/assets/autoridade/professor.webp" alt="Foto do professor do Você Contratado"></div>
       <div class="expert__text">
         <p>Sou especialista em entrevistas de emprego e já ensinei mais de 1.000 profissionais a serem chamados e aprovados nas vagas que desejam.</p>
         <p>Ao longo da minha carreira, estive nos dois lados da mesa. Como candidato, fui aprovado em alguns dos processos seletivos mais concorridos do Brasil, como o trainee da Suzano, com 35 mil inscritos e apenas 30 aprovados, e o da Ferrero. Como gestor, conduzi mais de 200 entrevistas e decidia quem seria aprovado.</p>
@@ -652,7 +657,7 @@ a:hover{color:var(--color-link-hover)}
 <!-- Seção 6: Entregáveis e oferta -->
 <section class="section section--warm" id="entregaveis">
   <div class="container">
-    <img class="section-logo" src="assets/logo/logo-black.webp" alt="Você Contratado">
+    <img class="section-logo" src="/VSL/assets/logo/logo-black.webp" alt="Você Contratado">
     <h2 class="h2 h2--center">Tudo o que você recebe ao entrar hoje</h2>
 
     <div class="group-title"><h3 class="h3 txt-petrol">O Você Contratado</h3></div>
@@ -661,19 +666,19 @@ a:hover{color:var(--color-link-hover)}
         <div class="card__icon"><svg class="ico ico-lg"><use href="#i-video"/></svg></div>
         <h4 class="card__title">Aulas do Método VOCE</h4>
         <p class="card__text">O passo a passo das 4 etapas: Vitrine Profissional, Oportunidades Ocultas, Conteúdo e Entrega. Do perfil no LinkedIn até a proposta na mesa.</p>
-        <img class="deliv-mockup" src="assets/mockup/aulas-mockup.webp" alt="Aula do Método VOCE com o professor" loading="lazy">
+        <img class="deliv-mockup" src="/VSL/assets/mockup/aulas-mockup.webp" alt="Aula do Método VOCE com o professor" loading="lazy">
       </article>
       <article class="card">
         <div class="card__icon"><svg class="ico ico-lg"><use href="#i-bot"/></svg></div>
         <h4 class="card__title">Robôs VOCE</h4>
         <p class="card__text">Agentes de inteligência artificial que executam cada etapa com você. Montam o seu perfil, revisam o seu LinkedIn, encontram vagas, preparam as suas respostas e treinam a entrevista com você.</p>
-        <img class="deliv-mockup" src="assets/mockup/robos-mockup.webp" alt="Robôs VOCE conectando LinkedIn, vagas, mensagens e entrevistas" loading="lazy">
+        <img class="deliv-mockup" src="/VSL/assets/mockup/robos-mockup.webp" alt="Robôs VOCE conectando LinkedIn, vagas, mensagens e entrevistas" loading="lazy">
       </article>
       <article class="card">
         <div class="card__icon"><svg class="ico ico-lg"><use href="#i-clipboard"/></svg></div>
         <h4 class="card__title">Kit Rápido Entrevista</h4>
         <p class="card__text">Materiais rápidos para se preparar e revisar antes da entrevista.</p>
-        <img class="deliv-mockup" src="assets/mockup/kit-mockup.webp" alt="Guia Prático das Respostas que Aprovam, Manual de Linguagem Corporal e Checklist Pré-Entrevista" loading="lazy">
+        <img class="deliv-mockup" src="/VSL/assets/mockup/kit-mockup.webp" alt="Guia Prático das Respostas que Aprovam, Manual de Linguagem Corporal e Checklist Pré-Entrevista" loading="lazy">
       </article>
     </div>
 
@@ -833,7 +838,7 @@ a:hover{color:var(--color-link-hover)}
 
 <footer class="footer">
   <div class="container footer__inner">
-    <img src="assets/logo/logo-white.webp" alt="Você Contratado">
+    <img src="/VSL/assets/logo/logo-white.webp" alt="Você Contratado">
     <span>© 2026 Você Contratado</span>
   </div>
 </footer>
@@ -935,7 +940,9 @@ document.querySelectorAll('.carousel').forEach(function(c){
   // Antes de sair para o checkout, garante os dados mais recentes no link clicado
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
-    if (a) a.href = acrescentar(a.href, dados());
+    if (!a) return;
+    var novo = acrescentar(a.href, dados());
+    if (novo !== a.href) a.href = novo;
   }, true);
 })();
 </script>
