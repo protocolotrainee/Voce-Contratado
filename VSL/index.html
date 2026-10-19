@@ -10,9 +10,11 @@ if (location.protocol === 'file:') {
   new MutationObserver(function (mudancas) {
     mudancas.forEach(function (m) {
       m.addedNodes.forEach(function (n) {
-        if (n.tagName === 'IMG') {
-          var s = n.getAttribute('src');
-          if (s && s.indexOf('/VSL/assets/') === 0) n.setAttribute('src', s.slice(5));
+        if (n.tagName === 'IMG' || n.tagName === 'VIDEO') {
+          ['src', 'poster'].forEach(function (at) {
+            var s = n.getAttribute(at);
+            if (s && s.indexOf('/VSL/assets/') === 0) n.setAttribute(at, s.slice(5));
+          });
         }
       });
     });
@@ -140,11 +142,44 @@ a:hover{color:var(--color-link-hover)}
 .video__play{width:76px;height:76px;border-radius:var(--radius-full);border:1.5px solid rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;color:var(--paper)}
 .video__play .ico{width:28px;height:28px;margin-left:4px}
 .video__note{position:absolute;left:var(--space-4);bottom:var(--space-4);font-size:var(--text-xs);color:var(--petrol-200);letter-spacing:var(--ls-wide);text-transform:uppercase}
+.social-proof{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
+.social-proof__faces{display:flex}
+.social-proof__faces img{width:34px;height:34px;border-radius:var(--radius-full);object-fit:cover;border:2px solid var(--paper);box-shadow:0 1px 3px rgba(20,24,26,.15)}
+.social-proof__faces img+img{margin-left:-10px}
+.social-proof span{font-size:var(--text-sm);font-weight:var(--fw-extrabold);text-transform:uppercase;letter-spacing:var(--ls-wide);color:var(--ink-500)}
 .kit{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-2) var(--space-6);margin-top:var(--space-5);font-size:var(--text-sm);color:var(--color-text-muted);list-style:none;padding:0}
 .kit li{display:inline-flex;align-items:center;gap:var(--space-2)}
 .kit .ico{color:var(--icon)}
 
 /* Seção 2: Paliativo */
+.versus{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-10);margin-top:var(--space-16)}
+.vs-card{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);align-items:center;border-radius:var(--radius-lg);padding:var(--space-12) var(--space-6) var(--space-6);box-shadow:0 8px 24px rgba(8,31,34,.25)}
+.vs-card--old{background:var(--no-soft)}
+.vs-card--new{background:var(--paper)}
+.vs-card--new::after{content:"";position:absolute;inset:0;padding:3px;border-radius:var(--radius-lg);pointer-events:none;background:conic-gradient(from var(--spin),#12a150,#5be49b,#22b8c7,#ffd84d,#12a150);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:spin-border 14s linear infinite}
+@media (prefers-reduced-motion:reduce){.vs-card--new::after{animation:none}}
+.vs-pill{position:absolute;top:-18px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:var(--fw-extrabold);text-transform:uppercase;letter-spacing:var(--ls-wide);box-shadow:0 6px 16px rgba(8,31,34,.25);z-index:1}
+.vs-pill--old{background:var(--ink-700);color:var(--paper)}
+.vs-pill--new{background:var(--petrol-700);color:var(--paper);border:2px solid #5be49b}
+.vs-list{list-style:none;padding:0;display:grid;gap:var(--space-5)}
+.vs-list li{display:flex;align-items:flex-start;gap:var(--space-3);font-size:var(--text-body);font-weight:var(--fw-bold);line-height:var(--lh-snug)}
+.vs-card--old .vs-list li{color:var(--ink-700)}
+.vs-card--new .vs-list li{color:var(--ink-900)}
+.vs-card--old .ico{color:var(--no);stroke-width:2.5;width:20px;height:20px;margin-top:1px}
+.vs-card--new .ico{color:var(--yes);stroke-width:3.5;width:20px;height:20px;margin-top:1px}
+.vs-media{border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:3/5;background:var(--ink-300);box-shadow:0 8px 20px rgba(8,31,34,.2)}
+.vs-media video{width:100%;height:100%;object-fit:cover;display:block}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:56px;height:56px;border-radius:var(--radius-full);background:var(--paper);color:var(--petrol-700);display:flex;align-items:center;justify-content:center;font-weight:var(--fw-extrabold);font-size:var(--text-lg);box-shadow:0 0 0 4px var(--petrol-700),0 6px 16px rgba(8,31,34,.3)}
+.statement i{font-style:italic}
+.dores{display:grid;grid-template-columns:1fr minmax(260px,330px) 1fr;gap:var(--space-8);align-items:center;margin-top:var(--space-12)}
+.dores__col{display:grid;gap:var(--space-5)}
+.dor{display:flex;align-items:center;gap:var(--space-4);background:var(--paper);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);box-shadow:0 8px 24px rgba(8,31,34,.25)}
+.dor p{font-size:var(--text-body);font-weight:var(--fw-semibold);line-height:var(--lh-snug);color:var(--ink-900)}
+.dores__col--left .dor{flex-direction:row-reverse;text-align:right}
+.dor__ico{flex:none;width:44px;height:44px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;background:var(--petrol-100);color:var(--icon)}
+.dor__ico--no{background:#fdecea;color:var(--no)}
+.dores__photo{border-radius:20px;overflow:hidden;box-shadow:0 16px 40px rgba(8,31,34,.35)}
+.dores__photo img{width:100%;height:auto}
 .pal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-6);margin-top:var(--space-12)}
 .compare{position:relative;margin-top:var(--space-16);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;background:var(--no-soft)}
 .compare__row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-border)}
@@ -170,7 +205,12 @@ a:hover{color:var(--color-link-hover)}
 
 /* Seção 3: Provas */
 .proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8) var(--space-6);margin-top:var(--space-12)}
-.proof--featured{background:var(--paper);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5)}
+.proof--featured{background:var(--paper);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.proof__photo{aspect-ratio:4/3;background:var(--petrol-100);overflow:hidden}
+.proof__photo img{width:100%;height:100%;object-fit:cover}
+.proof__body{padding:var(--space-5)}
+.proof__head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-1)}
+.proof__head .proof__name{font-size:var(--text-display-sm);font-weight:var(--fw-extrabold);letter-spacing:-0.02em;line-height:1.1}
 .proof__profile{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
 .avatar{width:52px;height:52px;flex:none;border-radius:var(--radius-full);background:var(--petrol-100);border:2px solid var(--paper);box-shadow:0 0 0 2px var(--petrol-300);display:flex;align-items:center;justify-content:center;color:var(--icon);overflow:hidden}
 .avatar img{width:100%;height:100%;object-fit:cover}
@@ -192,7 +232,7 @@ a:hover{color:var(--color-link-hover)}
 .proof__img{aspect-ratio:4/5;border:1px dashed var(--color-border-strong);border-radius:var(--radius-md);background:var(--color-surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-2);color:var(--ink-300);font-size:var(--text-xs);text-align:center;padding:var(--space-4)}
 .proof__img--real{border:1px solid var(--color-border);background:var(--no-soft);padding:var(--space-3)}
 .proof__img--real img{width:100%;height:100%;object-fit:contain;border-radius:var(--radius-sm)}
-.proof__desc{font-size:var(--text-sm);color:var(--ink-700);margin-bottom:var(--space-4)}
+.proof__desc{font-size:var(--text-body);color:var(--ink-700);margin-bottom:var(--space-4)}
 .proof figcaption{margin-top:var(--space-3);font-size:var(--text-sm);color:var(--color-text-muted)}
 .proof figcaption strong{color:var(--color-text);font-weight:var(--fw-semibold)}
 .behind{margin-top:var(--space-16)}
@@ -210,6 +250,7 @@ a:hover{color:var(--color-link-hover)}
 .step__meta{font-size:var(--text-label);font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:var(--ls-wide);color:var(--color-text-muted);margin-top:var(--space-4)}
 .step__title{font-family:var(--font-serif-display);font-size:var(--text-xl);line-height:var(--lh-snug);margin:var(--space-2) 0 var(--space-3)}
 .step__text{font-size:var(--text-sm);color:var(--color-text-muted);flex:1}
+.step__text strong{color:var(--ink-900);font-weight:var(--fw-bold)}
 .result-tag{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;gap:6px;vertical-align:middle;padding:1px 2px}
 .result-tag::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.95),transparent);transform:skewX(-20deg);animation:shine 3.2s ease-in-out infinite;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.result-tag::after{display:none}}
@@ -225,7 +266,6 @@ a:hover{color:var(--color-link-hover)}
 .photo{aspect-ratio:4/5;border:1px dashed var(--color-border-strong);border-radius:var(--radius-lg);background:var(--color-surface);display:flex;flex-direction:column;gap:var(--space-2);align-items:center;justify-content:center;color:var(--ink-300);font-size:var(--text-sm);text-align:center;padding:var(--space-6)}
 .expert__text p+p{margin-top:var(--space-5)}
 .expert__text p{color:var(--ink-700)}
-.expert__text p:first-child{font-family:var(--font-serif-display);font-size:var(--text-xl);line-height:var(--lh-snug);color:var(--color-text)}
 .numbers{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);margin-top:var(--space-10)}
 .number{background:#e8f1fb;border:1px solid #bcd6f2;border-radius:var(--radius-lg);padding:var(--space-6)}
 .number__value{font-family:var(--font-serif-display);font-size:var(--text-display-md);line-height:1;color:#0a66c2}
@@ -264,7 +304,8 @@ a:hover{color:var(--color-link-hover)}
 .surprise__emoji{position:absolute;top:-16px;left:var(--space-3);width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;background:var(--paper);border:1px solid var(--color-border);border-radius:var(--radius-full)}
 .surprise__tag{display:block;font-size:var(--text-xs);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:var(--ls-wide);color:var(--petrol-700)}
 .surprise strong{font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--ink-900)}
-.surprise__value{font-size:var(--text-body);font-weight:var(--fw-medium);color:var(--ink-900);white-space:nowrap;text-decoration-color:var(--no);text-decoration-thickness:2px}
+.surprise__value{font-size:var(--text-body);font-weight:var(--fw-medium);color:var(--ink-900);white-space:nowrap}
+.anchor-note{text-align:center;margin-top:var(--space-8);font-size:var(--text-lg);font-weight:var(--fw-bold);color:var(--ink-900)}
 .price{text-align:center;margin-top:var(--space-8);padding-top:var(--space-8);border-top:1px solid var(--color-border)}
 .price__from{font-size:var(--text-lg);font-weight:var(--fw-medium);color:var(--ink-700)}
 .price__from s{color:var(--ink-700);font-weight:var(--fw-bold)}
@@ -283,7 +324,7 @@ a:hover{color:var(--color-link-hover)}
 .math__list{list-style:none;padding:0;display:grid;gap:var(--space-3)}
 .math__list li{position:relative;padding-left:var(--space-6);font-size:var(--text-lg);font-weight:var(--fw-medium);color:var(--ink-900)}
 .math__list li::before{content:"";position:absolute;left:0;top:.6em;width:10px;height:10px;border-radius:var(--radius-full);background:var(--no)}
-.math__list li+li::before{background:var(--yes)}
+.math__list li+li::before{background:var(--petrol-700)}
 .bars{margin-top:var(--space-8);display:grid;gap:var(--space-5)}
 .bar__label{display:flex;justify-content:space-between;gap:var(--space-4);font-size:var(--text-body);margin-bottom:var(--space-2)}
 .bar__label b{font-weight:var(--fw-bold)}
@@ -302,11 +343,11 @@ a:hover{color:var(--color-link-hover)}
 .tl-row--mid{padding-left:50%}
 .tl-label{display:flex;flex-wrap:wrap;gap:0 var(--space-3);align-items:baseline;margin-bottom:var(--space-2);font-size:var(--text-body)}
 .tl-label b{font-weight:var(--fw-bold);color:var(--ink-900)}
-.tl-label span{color:var(--yes-text);font-weight:var(--fw-extrabold);font-size:var(--text-lg)}
+.tl-label span{color:var(--petrol-700);font-weight:var(--fw-extrabold);font-size:var(--text-lg)}
 .tl-row--mid .tl-label{padding-left:var(--space-3)}
 .tl-bar{height:30px;border-radius:var(--radius-full);display:flex;align-items:center;padding:0 var(--space-4);font-size:var(--text-sm);font-weight:var(--fw-extrabold);color:var(--paper);white-space:nowrap}
 .tl-bar--loss{width:50%;background:var(--no)}
-.tl-bar--course{width:16px;padding:0;background:var(--yes)}
+.tl-bar--course{width:16px;padding:0;background:var(--petrol-700)}
 .tl-bar--hired{width:100%;background:var(--yes);justify-content:flex-end}
 .tl-short{display:none}
 .bar-pair{position:relative;display:grid;gap:var(--space-10)}
@@ -348,7 +389,6 @@ a:hover{color:var(--color-link-hover)}
 .hero h1,.h2{font-weight:var(--fw-extrabold);letter-spacing:-0.025em;line-height:1.15}
 .hero h1{letter-spacing:-0.03em;line-height:1.08}
 .h3,.card__title,.step__title,.number__value,.step__letter,.seal__n,.compare__head .compare__cell{font-weight:var(--fw-bold);letter-spacing:-0.015em}
-.expert__text p:first-child{font-weight:var(--fw-semibold)}
 
 /* Responsivo */
 @media (max-width:1024px){
@@ -366,6 +406,14 @@ a:hover{color:var(--color-link-hover)}
   .hero__grid{row-gap:var(--space-6)}
   .hero__cta .btn{width:100%}
   .pal-grid,.deliv,.expert,.final__grid{grid-template-columns:1fr}
+  .dores{grid-template-columns:1fr;gap:var(--space-5)}
+  .versus{grid-template-columns:1fr;gap:var(--space-12)}
+  .vs-card{grid-template-columns:1fr;padding:var(--space-10) var(--space-5) var(--space-6)}
+  .vs-card .vs-media{order:-1;max-width:320px;width:100%;margin:0 auto}
+  .vs-pill{white-space:normal;width:max-content;max-width:calc(100% - var(--space-8));text-align:center;line-height:var(--lh-snug)}
+  .vs-badge{position:static;transform:none;margin:calc(-1 * var(--space-8)) auto}
+  .dores__col--left .dor{flex-direction:row;text-align:left}
+  .dores__photo{max-width:320px;width:100%;margin:var(--space-2) auto}
   .expert{gap:var(--space-8)}
   .photo{aspect-ratio:1/1;max-width:360px}
   .compare__cell{padding:var(--space-4);gap:var(--space-2);font-size:var(--text-xs)}
@@ -416,6 +464,9 @@ a:hover{color:var(--color-link-hover)}
   <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9.2 5 2.8-5 2.8z" fill="currentColor"/></symbol>
   <symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
   <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+  <symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+  <symbol id="i-battery-low" viewBox="0 0 24 24"><rect width="16" height="10" x="2" y="7" rx="2"/><path d="M22 11v2"/><path d="M6 11v2"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
   <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></symbol>
@@ -448,7 +499,7 @@ a:hover{color:var(--color-link-hover)}
   <div class="container hero__grid">
     <div class="hero__head">
       <h1>Pode tacar <span class="hero__fire">fogo</span> no seu currículo!</h1>
-      <p class="hero__sub">Você não vai mais precisar dele. Descubra como conseguir o seu próximo emprego em até 8 semanas no vídeo abaixo:</p>
+      <p class="hero__sub">Você não vai mais precisar dele. Entenda como conseguir o seu próximo emprego em até 8 semanas no vídeo abaixo:</p>
     </div>
     <div class="hero__video">
       <div class="video" role="img" aria-label="Espaço do vídeo de vendas">
@@ -457,11 +508,11 @@ a:hover{color:var(--color-link-hover)}
       </div>
     </div>
     <div class="hero__cta">
-      <a class="btn btn--primary" href="#oferta">Quero meu próximo emprego</a>
+      <div class="social-proof"><div class="social-proof__faces" aria-hidden="true"><img src="/VSL/assets/depoimentos/avatars/amanda.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/renzo.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/ana.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/barbara.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/thais.webp" alt=""></div><span>+1.000 alunos</span></div>
+      <a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a>
       <ul class="kit">
-        <li><svg class="ico ico-sm"><use href="#i-users"/></svg>+1.000 alunos</li>
         <li><svg class="ico ico-sm"><use href="#i-shield"/></svg>7 dias de garantia</li>
-        <li><svg class="ico ico-sm"><use href="#i-zap"/></svg>Acesso imediato</li>
+        <li><svg class="ico ico-sm"><use href="#i-zap"/></svg>Acesso imediato e vitalício</li>
       </ul>
     </div>
   </div>
@@ -470,126 +521,135 @@ a:hover{color:var(--color-link-hover)}
 <!-- Seção 2: Paliativo -->
 <section class="section section--petrol">
   <div class="container">
-    <h2 class="h2">Ninguém nunca te ensinou a procurar emprego e passar em entrevistas.</h2>
-    <p class="lead">A escola não ensina, a faculdade não ensina, e o que sobra é repetir o que todo mundo faz. Você já se identificou com alguma dessas situações?</p>
+    <h2 class="h2">Já chega de enviar currículos e sempre ser ignorado!</h2>
+    <p class="lead">A real é que você está perdendo tempo e a sua carreira está ficando pra trás. Você se identifica com alguma dessas situações?</p>
 
-    <div class="pal-grid">
-      <article class="card">
-        <div class="card__icon"><svg class="ico ico-lg"><use href="#i-file"/></svg></div>
-        <h3 class="card__title">Mandar currículo para portais de vagas</h3>
-        <p class="card__text">Uma única vaga recebe milhares de currículos. O seu entra no meio da pilha, e a resposta que volta é o e-mail automático de <em>"agradecemos a sua candidatura"</em>.</p>
-      </article>
-      <article class="card">
-        <div class="card__icon"><svg class="ico ico-lg"><use href="#i-hourglass"/></svg></div>
-        <h3 class="card__title">Esperar uma indicação</h3>
-        <p class="card__text">Se só quem tem indicação fosse contratado, as empresas não investiriam milhões em recrutamento. Enquanto você espera alguém lembrar de você, os meses passam e as contas chegam.</p>
-      </article>
-      <article class="card">
-        <div class="card__icon card__icon--li"><svg class="ico ico-lg"><use href="#i-linkedin"/></svg></div>
-        <h3 class="card__title">Usar o LinkedIn de forma ineficiente</h3>
-        <p class="card__text">Perfil montado de qualquer jeito e competindo vagas com milhares de pessoas. Para o algoritmo te colocar na <strong class="txt-li">Lista de Indicação dos Recrutadores</strong>, você precisa executar ajustes específicos numa ordem certa.</p>
-      </article>
-      <article class="card">
-        <div class="card__icon"><svg class="ico ico-lg"><use href="#i-nervous"/></svg></div>
-        <h3 class="card__title">Ir para a entrevista no improviso</h3>
-        <p class="card__text">Você trava no <em>"me fale sobre você"</em>, a voz acelera e a resposta sai pela metade. O recrutador avalia o que você fala e como o seu corpo reage. Quando os dois falham, vem mais um <strong class="txt-no">"NÃO"</strong>.</p>
-      </article>
-    </div>
-
-    <div class="compare" role="table" aria-label="Comparação entre o jeito antigo e o aluno do Você Contratado">
-      <div class="compare__row compare__head" role="row">
-        <div class="compare__cell compare__old" role="columnheader">Quem procura emprego do jeito antigo</div>
-        <div class="compare__cell compare__new" role="columnheader">Aluno do Você Contratado</div>
+    <div class="dores">
+      <div class="dores__col dores__col--left">
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-file"/></svg></span><p>Nem lembra quantos currículos já enviou.</p></div>
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-hand"/></svg></span><p>Conta nos dedos as entrevistas que fez nos últimos meses.</p></div>
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-nervous"/></svg></span><p>Quando finalmente consegue uma entrevista, recebe um <strong class="txt-no">NÃO</strong>.</p></div>
       </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>Manda currículo para portais de vagas como Gupy e Vagas.com</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>É encontrado pelo recrutador no LinkedIn</div></div>
-      </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>Poucas entrevistas e espaçadas</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>Convites para entrevista toda semana</div></div>
-      </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>Disputa com milhares de currículos para a mesma vaga</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>Acessa vagas recém-abertas e contato direto com quem contrata</div></div>
-      </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>Improvisa ou cospe respostas decoradas na entrevista</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>Responde com a própria história, com início, meio e fim</div></div>
-      </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>O nervosismo aparece na voz e no corpo</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>Tom, ritmo e postura passam segurança</div></div>
-      </div>
-      <div class="compare__row" role="row">
-        <div class="compare__cell compare__old" role="cell"><svg class="ico ico-sm"><use href="#i-x"/></svg><div>Recebe e-mail automático e mais um "não"</div></div>
-        <div class="compare__cell compare__new" role="cell"><svg class="ico ico-sm"><use href="#i-check"/></svg><div>Coleciona propostas na mesa para escolher</div></div>
+      <div class="dores__photo"><img src="/VSL/assets/dores/foto-dores.webp" alt="Candidata frustrada com a busca por emprego" loading="lazy"></div>
+      <div class="dores__col dores__col--right">
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-dollar"/></svg></span><p>Sabe que poderia ter um salário mais alto.</p></div>
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-briefcase"/></svg></span><p>Mas conseguir um bom emprego hoje parece quase impossível.</p></div>
+        <div class="dor"><span class="dor__ico"><svg class="ico"><use href="#i-battery-low"/></svg></span><p>Sensação de cansaço e frustração.</p></div>
       </div>
     </div>
 
-    <p class="statement closing">O que separa os dois lados da tabela é saber como o recrutador procura e como ele decide. <em>E isso se aprende.</em></p>
+    <p class="statement closing">Saiba que você não está sozinho e a culpa não é sua. Ninguém te contou como o jogo do recrutamento funciona <strong>hoje</strong>.</p>
+
+    <div class="versus">
+      <div class="vs-card vs-card--old">
+        <span class="vs-pill vs-pill--old">Quem procura emprego do jeito antigo</span>
+        <ul class="vs-list">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg><span>Manda currículo em portais de vagas como Gupy e Vagas.com</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg><span>Poucas entrevistas nos últimos meses</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg><span>Disputa com milhares de currículos pela mesma vaga</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg><span>Improvisa respostas e fica nervoso na hora da entrevista</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg><span>Recebe mais um e-mail automático com um <strong class="txt-no">NÃO</strong>.</span></li>
+        </ul>
+        <div class="vs-media"><video data-src="/VSL/assets/comparativo/jeito-antigo.mp4" poster="/VSL/assets/comparativo/jeito-antigo.webp" muted loop playsinline preload="none" aria-label="Candidata frustrada procurando emprego do jeito antigo"></video></div>
+      </div>
+      <span class="vs-badge" aria-hidden="true">VS</span>
+      <div class="vs-card vs-card--new">
+        <span class="vs-pill vs-pill--new">Aluno do Você Contratado</span>
+        <div class="vs-media"><video data-src="/VSL/assets/comparativo/aluno-vc.mp4" poster="/VSL/assets/comparativo/aluno-vc.webp" muted loop playsinline preload="none" aria-label="Aluna do Você Contratado confiante em uma entrevista"></video></div>
+        <ul class="vs-list">
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>É encontrado por recrutadores no LinkedIn</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Pelo menos 1 entrevista por semana</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Acessa vagas ocultas e tem contato direto com quem contrata</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Respostas seguras e bem estruturadas</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span>Coleciona propostas de emprego e escolhe onde vai trabalhar</span></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- Seção 3: Provas -->
 <section class="section" id="provas">
   <div class="container">
-    <h2 class="h2">Mais de 1.000 alunos. E toda semana chegam mensagens como essas <span class="point-down" aria-hidden="true">👇</span></h2>
-    <p class="lead">Áreas, idades e momentos de carreira diferentes. Todos aprenderam como o recrutador procura e decide.</p>
+    <h2 class="h2">Mais de 1.000 alunos. E todo dia chegam mensagens assim <span class="point-down" aria-hidden="true">👇</span></h2>
+    <p class="lead">Áreas, idades e momentos de carreira diferentes. Essas pessoas entenderam como atrair recrutadores e passar nas entrevistas.</p>
 
     <div class="proofs">
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/amanda.webp" alt="Foto de Amanda"></div><span class="proof__name">Amanda</span><img class="co-logo" style="height:21px" src="/VSL/assets/depoimentos/logos/vale.webp" alt="Vale"></div>
-        <p class="proof__desc">Aprovada como engenheira na Vale.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-04-amanda.webp" alt="Print da mensagem de Amanda" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/amanda.webp" style="object-position:50% 53%" alt="Foto de Amanda" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Amanda</span><img class="co-logo" style="height:31px" src="/VSL/assets/depoimentos/logos/vale.webp" alt="" loading="lazy"></div>
+          <p class="proof__desc">Contratada como engenheira na Vale.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-04-amanda.webp" alt="Print da mensagem de Amanda" loading="lazy"></div>
+        </div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/renzo.webp" alt="Foto de Renzo"></div><span class="proof__name">Renzo</span><img class="co-logo" style="height:24px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
-        <p class="proof__desc">Convite para Jovem Executivo, principal programa de entrada na maior empresa de celulose do mundo.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-02-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/renzo.webp" style="object-position:50% 29%" alt="Foto de Renzo" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Renzo</span><img class="co-logo" style="height:34px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="" loading="lazy"></div>
+          <p class="proof__desc">Selecionado para o programa de formação de executivos da Suzano.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-02-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div>
+        </div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/ana.webp" alt="Foto de Ana"></div><span class="proof__name">Ana</span><img class="co-logo" style="height:15px" src="/VSL/assets/depoimentos/logos/nipponkoei.webp" alt="Nippon Koei"></div>
-        <p class="proof__desc">Abordada por uma empresa no LinkedIn 3 dias depois de ajustar o perfil.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-01-ana.webp" alt="Print da mensagem de Ana" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/barbara.webp" style="object-position:50% 58%" alt="Foto de Bárbara" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Bárbara</span><img class="co-logo" style="height:25px" src="/VSL/assets/depoimentos/logos/jsl.webp" alt="" loading="lazy"></div>
+          <p class="proof__desc">Aprovada no trainee da JSL. O CEO ligou por vídeo para contar.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-05-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div>
+        </div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/barbara.webp" alt="Foto de Bárbara"></div><span class="proof__name">Bárbara</span><img class="co-logo" style="height:17px" src="/VSL/assets/depoimentos/logos/jsl.webp" alt="JSL"></div>
-        <p class="proof__desc">Aprovada no trainee da JSL. O CEO ligou por vídeo para contar.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-05-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/thais.webp" style="object-position:50% 0%" alt="Foto de Thais" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Thais</span><img class="co-logo" style="height:34px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="" loading="lazy"></div>
+          <p class="proof__desc">Aprovada no trainee da Suzano.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-06-thais.webp" alt="Print da mensagem de Thais" loading="lazy"></div>
+        </div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/thais.webp" alt="Foto de Thais"></div><span class="proof__name">Thais</span><img class="co-logo" style="height:24px" src="/VSL/assets/depoimentos/logos/suzano.webp" alt="Suzano"></div>
-        <p class="proof__desc">Aprovada no trainee da Suzano.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-06-thais.webp" alt="Print da mensagem de Thais" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/bruno.webp" style="object-position:50% 50%" alt="Foto de Bruno" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Bruno</span><img class="co-logo" style="height:23px" src="/VSL/assets/depoimentos/logos/liguelead.webp" alt="" loading="lazy"></div>
+          <p class="proof__desc">Depois de vários currículos e negativas, contratado como Especialista Comercial.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-07-bruno.webp" alt="Print da mensagem de Bruno" loading="lazy"></div>
+        </div>
       </figure>
       <figure class="proof proof--featured">
-        <div class="proof__profile"><div class="avatar"><img src="/VSL/assets/depoimentos/avatars/bruno.webp" alt="Foto de Bruno"></div><span class="proof__name">Bruno</span><img class="co-logo" style="height:16px" src="/VSL/assets/depoimentos/logos/liguelead.webp" alt="Ligue Lead"></div>
-        <p class="proof__desc">Depois de vários currículos e negativas, aprovado como Especialista Comercial.</p>
-        <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-07-bruno.webp" alt="Print da mensagem de Bruno" loading="lazy"></div>
+        <div class="proof__photo"><img src="/VSL/assets/depoimentos/fotos/marcelino.webp" style="object-position:50% 50%" alt="Foto de Marcelino" loading="lazy"></div>
+        <div class="proof__body">
+          <div class="proof__head"><span class="proof__name">Marcelino</span></div>
+          <p class="proof__desc">Contratado no Hospital Estadual de Goiânia.</p>
+          <div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-15-marcelino.webp" alt="Print da mensagem de Marcelino" loading="lazy"></div>
+        </div>
       </figure>
     </div>
 
     <h3 class="h3 carousel__title">E muitos mais</h3>
     <div class="carousel" aria-label="Mais prints de alunos">
       <div class="carousel__track" tabindex="0">
-        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-03-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Renzo</strong></span>Vaga 100% remota, com salário em dólar.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-08-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div><figcaption><span class="proof__who"><strong>Bárbara</strong></span>Aprovada no trainee da Romi.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-09-mateus.webp" alt="Print da mensagem de Mateus" loading="lazy"></div><figcaption><span class="proof__who"><strong>Mateus</strong></span>Selecionado para a penúltima etapa do CEO por Um Mês, da Adecco.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-10-max.webp" alt="Print da mensagem de Max" loading="lazy"></div><figcaption><span class="proof__who"><strong>Max</strong></span>Aprovado como Analista de RH, com salário acima do que esperava.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-11-ubaldo.webp" alt="Print da mensagem de Ubaldo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ubaldo</strong></span>Contratado na primeira entrevista depois do curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-12-aureline.webp" alt="Print da mensagem de Aureline" loading="lazy"></div><figcaption><span class="proof__who"><strong>Aureline</strong></span>Aprovada fazendo exatamente o que aprendeu no curso.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-13-diogo.webp" alt="Print da mensagem de Diogo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Diogo</strong></span>Duas entrevistas, duas propostas na mesa.</figcaption></figure>        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img src="/VSL/assets/depoimentos/prints/print-14-manuelly.webp" alt="Print da mensagem de Manuelly" loading="lazy"></div><figcaption><span class="proof__who"><strong>Manuelly</strong></span>Contrato assinado depois de uma entrevista tranquila e objetiva.</figcaption></figure>      </div>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-19-thais.webp" alt="Print da mensagem de Thais" loading="lazy"></div><figcaption><span class="proof__who"><strong>Thais</strong></span>Abordada por 4 recrutadores na primeira semana e recebeu uma proposta de consultoria.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-08-barbara.webp" alt="Print da mensagem de Bárbara" loading="lazy"></div><figcaption><span class="proof__who"><strong>Bárbara</strong></span>Aprovada no trainee da Romi.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-18-ana.webp" alt="Print da mensagem de Ana" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ana</strong></span>Abordada para vaga na XP Inc.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-03-renzo.webp" alt="Print da mensagem de Renzo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Renzo</strong></span>Vaga 100% remota, com salário em dólar.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-16-alexandre.webp" alt="Print da mensagem de Alexandre" loading="lazy"></div><figcaption><span class="proof__who"><strong>Alexandre</strong></span>Abordado para vaga tech na Faria Lima.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-09-mateus.webp" alt="Print da mensagem de Mateus" loading="lazy"></div><figcaption><span class="proof__who"><strong>Mateus</strong></span>Selecionado para a penúltima etapa do CEO por Um Mês, da Adecco.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-01-ana.webp" alt="Print da mensagem de Ana" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ana</strong></span>Abordada por uma empresa no LinkedIn 3 dias depois de ajustar o perfil.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-10-max.webp" alt="Print da mensagem de Max" loading="lazy"></div><figcaption><span class="proof__who"><strong>Max</strong></span>Aprovado como Analista de RH, com salário acima do que esperava.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-11-ubaldo.webp" alt="Print da mensagem de Ubaldo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Ubaldo</strong></span>Contratado na primeira entrevista depois do curso.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-17-alexandre.webp" alt="Print da mensagem de Alexandre" loading="lazy"></div><figcaption><span class="proof__who"><strong>Alexandre</strong></span>Abordado pela DBC Company para vaga 100% remota.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-12-aureline.webp" alt="Print da mensagem de Aureline" loading="lazy"></div><figcaption><span class="proof__who"><strong>Aureline</strong></span>Aprovada fazendo exatamente o que aprendeu no curso.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-13-diogo.webp" alt="Print da mensagem de Diogo" loading="lazy"></div><figcaption><span class="proof__who"><strong>Diogo</strong></span>Duas entrevistas, duas propostas na mesa.</figcaption></figure>
+        <figure class="proof carousel__item"><div class="proof__img proof__img--real"><img data-src="/VSL/assets/depoimentos/prints/print-14-manuelly.webp" alt="Print da mensagem de Manuelly" loading="lazy"></div><figcaption><span class="proof__who"><strong>Manuelly</strong></span>Contrato assinado depois de uma entrevista tranquila e objetiva.</figcaption></figure>
+      </div>
       <div class="carousel__nav">
         <button class="carousel__btn" type="button" data-dir="-1" aria-label="Prints anteriores"><svg class="ico"><use href="#i-chevron-left"/></svg></button>
         <button class="carousel__btn" type="button" data-dir="1" aria-label="Próximos prints"><svg class="ico"><use href="#i-chevron-right"/></svg></button>
       </div>
     </div>
 
-    <div class="behind">
-      <ul class="behind__grid">
-        <li><svg class="ico"><use href="#i-calendar"/></svg>Convites para entrevista toda semana</li>
-        <li><svg class="ico"><use href="#i-message"/></svg>Responder perguntas difíceis sem travar</li>
-        <li><svg class="ico"><use href="#i-briefcase"/></svg>Propostas para escolher</li>
-        <li><svg class="ico"><use href="#i-dollar"/></svg>Negociar salário com segurança</li>
-      </ul>
-    </div>
 
-    <div class="section-cta"><a class="btn btn--primary" href="#oferta">Quero meu próximo emprego</a></div>
+    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a></div>
   </div>
 </section>
 
@@ -604,7 +664,7 @@ a:hover{color:var(--color-link-hover)}
         <div class="step__letter">V</div>
         <div class="step__meta">Pilar 1</div>
         <h3 class="step__title">Vitrine Profissional</h3>
-        <p class="step__text">Os ajustes no LinkedIn, numa ordem certa, que colocam o seu perfil na Lista de Indicação dos Recrutadores.</p>
+        <p class="step__text">Os ajustes no LinkedIn do jeito certo que colocam o seu perfil na Lista de Indicação dos Recrutadores.</p>
         <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> os recrutadores passam a te encontrar.</p>
       </article>
       <article class="card step">
@@ -612,36 +672,36 @@ a:hover{color:var(--color-link-hover)}
         <div class="step__meta">Pilar 2</div>
         <h3 class="step__title">Oportunidades Ocultas</h3>
         <p class="step__text">Vagas recém-abertas, fora dos portais e longe do oceano de currículos. Você fala direto com quem contrata: o recrutador ou o gestor.</p>
-        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> pelo menos uma entrevista por semana.</p>
+        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> você faz 1 entrevista por semana, no mínimo.</p>
       </article>
       <article class="card step">
         <div class="step__letter">C</div>
         <div class="step__meta">Pilar 3</div>
         <h3 class="step__title">Conteúdo</h3>
         <p class="step__text">O que o recrutador escuta. As suas respostas montadas a partir da sua história real, para perguntas como <em>"me fale sobre você"</em> e <em>"por que você saiu do último emprego?"</em>.</p>
-        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> nenhuma pergunta te pega de surpresa.</p>
+        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> você fala com clareza na entrevista, do começo ao fim.</p>
       </article>
       <article class="card step">
         <div class="step__letter">E</div>
         <div class="step__meta">Pilar 4</div>
         <h3 class="step__title">Entrega</h3>
         <p class="step__text">O que o recrutador vê. Tom de voz, energia, cadência e linguagem corporal ajustados para passar uma boa impressão em qualquer entrevista.</p>
-        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> a sua voz e o seu corpo passam a mesma segurança das suas respostas.</p>
+        <p class="step__result"><span class="result-tag"><svg class="ico ico-sm"><use href="#i-check-circle"/></svg><b>Resultado:</b></span> sua voz e o seu corpo passam a mesma segurança das suas respostas.</p>
       </article>
     </div>
 
-    <p class="statement closing">Pelo menos uma entrevista por semana. <em>E o seu próximo emprego em até 8 semanas.</em></p>
+    <p class="statement closing">1 entrevista por semana, no mínimo. E <em>você contratado em ATÉ 8 semanas</em>.</p>
   </div>
 </section>
 
 <!-- Seção 5: Sobre o Expert -->
 <section class="section" id="professor">
   <div class="container">
-    <h2 class="h2">Conheça seu professor</h2>
+    <h2 class="h2">Conheça quem vai te guiar</h2>
     <div class="expert">
-      <div class="photo photo--real"><img src="/VSL/assets/autoridade/professor.webp" alt="Foto do professor do Você Contratado"></div>
+      <div class="photo photo--real"><img src="/VSL/assets/autoridade/professor.webp" alt="Foto do professor do Você Contratado" loading="lazy"></div>
       <div class="expert__text">
-        <p>Sou especialista em entrevistas de emprego e já ensinei mais de 1.000 profissionais a serem chamados e aprovados nas vagas que desejam.</p>
+        <p>Eu sou um profissional, como você, mas que entendeu como o jogo do recrutamento funciona.<br>Já fui candidato, já fui o gestor que contrata e já preparei <strong>mais de 1.000 profissionais para conseguirem um novo emprego.</strong></p>
         <p>Ao longo da minha carreira, estive nos dois lados da mesa. Como candidato, fui aprovado em alguns dos processos seletivos mais concorridos do Brasil, como o trainee da Suzano, com 35 mil inscritos e apenas 30 aprovados, e o da Ferrero. Como gestor, conduzi mais de 200 entrevistas e decidia quem seria aprovado.</p>
         <p>Nessa jornada, entendi por que tanta gente boa não é chamada para entrevistas: o que aprova não é o currículo, e sim estar visível para os recrutadores e saber o que dizer e como dizer na entrevista. Comecei a aplicar esse conhecimento na minha carreira e a compartilhar com amigos, e os resultados foram surpreendentes. Hoje, compartilho esse aprendizado em um método prático, o <strong class="txt-petrol">Método VOCE</strong>.</p>
         <p>Deixei o mundo corporativo, inclusive o emprego que um dia foi o meu sonho, para me dedicar a uma missão: <strong>ajudar mais pessoas a conquistarem o seu próximo emprego</strong>. Eu sei o quanto um emprego novo muda a vida de uma pessoa e de toda a sua família, e é isso que me move todos os dias.</p>
@@ -657,8 +717,8 @@ a:hover{color:var(--color-link-hover)}
 <!-- Seção 6: Entregáveis e oferta -->
 <section class="section section--warm" id="entregaveis">
   <div class="container">
-    <img class="section-logo" src="/VSL/assets/logo/logo-black.webp" alt="Você Contratado">
-    <h2 class="h2 h2--center">Tudo o que você recebe ao entrar hoje</h2>
+    <img class="section-logo" src="/VSL/assets/logo/logo-black.webp" alt="Você Contratado" loading="lazy">
+    <h2 class="h2 h2--center">Tudo o que você recebe ao entrar hoje:</h2>
 
     <div class="group-title"><h3 class="h3 txt-petrol">O Você Contratado</h3></div>
     <div class="deliv">
@@ -671,13 +731,13 @@ a:hover{color:var(--color-link-hover)}
       <article class="card">
         <div class="card__icon"><svg class="ico ico-lg"><use href="#i-bot"/></svg></div>
         <h4 class="card__title">Robôs VOCE</h4>
-        <p class="card__text">Agentes de inteligência artificial que executam cada etapa com você. Montam o seu perfil, revisam o seu LinkedIn, encontram vagas, preparam as suas respostas e treinam a entrevista com você.</p>
+        <p class="card__text">Agentes de inteligência artificial que executam cada etapa com você. Montam o seu perfil, revisam o seu LinkedIn, encontram vagas, preparam as suas respostas e treinam você para a entrevista.</p>
         <img class="deliv-mockup" src="/VSL/assets/mockup/robos-mockup.webp" alt="Robôs VOCE conectando LinkedIn, vagas, mensagens e entrevistas" loading="lazy">
       </article>
       <article class="card">
         <div class="card__icon"><svg class="ico ico-lg"><use href="#i-clipboard"/></svg></div>
         <h4 class="card__title">Kit Rápido Entrevista</h4>
-        <p class="card__text">Materiais rápidos para se preparar e revisar antes da entrevista.</p>
+        <p class="card__text">Materiais de consulta rápida para revisar antes da entrevista.</p>
         <img class="deliv-mockup" src="/VSL/assets/mockup/kit-mockup.webp" alt="Guia Prático das Respostas que Aprovam, Manual de Linguagem Corporal e Checklist Pré-Entrevista" loading="lazy">
       </article>
     </div>
@@ -688,19 +748,19 @@ a:hover{color:var(--color-link-hover)}
         <span class="gift" aria-hidden="true">🎁</span>
         <div class="bonus__top"><span class="badge">Bônus 1</span><svg class="ico bonus__ico" aria-hidden="true"><use href="#i-dollar"/></svg></div>
         <h4 class="card__title">Masterclass de Negociação Salarial</h4>
-        <p class="card__text">Toda vaga tem uma faixa salarial aprovada, e a empresa quase sempre tenta te contratar no limite de baixo. Aprenda a responder "qual a sua pretensão salarial?" e a entrar ganhando mais.</p>
+        <p class="card__text">Toda vaga tem uma faixa salarial aprovada, e a empresa tenta te contratar no valor mínimo da faixa. Aprenda a responder à pergunta “Qual a sua pretensão salarial?”, negocie com segurança e entre ganhando mais.</p>
       </article>
       <article class="card">
         <span class="gift" aria-hidden="true">🎁</span>
         <div class="bonus__top"><span class="badge">Bônus 2</span><svg class="ico bonus__ico" aria-hidden="true"><use href="#i-handshake"/></svg></div>
         <h4 class="card__title">Workshop Trabalho Rápido</h4>
-        <p class="card__text">Para quem está desempregado. Como conseguir um trabalho ainda esta semana, ter uma renda extra enquanto procura e voltar ao mercado como profissional ativo.</p>
+        <p class="card__text">Se você está desempregado, esse bônus é pra você. Entenda como conseguir um trabalho como freelancer ainda essa semana e ter renda extra enquanto procura o seu próximo emprego.</p>
       </article>
       <article class="card">
         <span class="gift" aria-hidden="true">🎁</span>
         <div class="bonus__top"><span class="badge">Bônus surpresa</span><svg class="ico bonus__ico" aria-hidden="true"><use href="#i-trending"/></svg></div>
         <h4 class="card__title">Workshop Os Primeiros 90 Dias</h4>
-        <p class="card__text">Ser contratado é só o começo. O que fazer nos primeiros meses para se destacar desde o início na empresa nova.</p>
+        <p class="card__text">Ser contratado é o começo de um novo capítulo na sua história profissional. Tenha um plano de guerra para os primeiros 90 dias e saiba como se destacar desde o início na empresa nova.</p>
       </article>
     </div>
 
@@ -708,7 +768,7 @@ a:hover{color:var(--color-link-hover)}
       <div class="card__icon"><svg class="ico ico-lg"><use href="#i-mail"/></svg></div>
       <div>
         <h4 class="card__title">Suporte com a equipe</h4>
-        <p class="card__text">Acesso ao e-mail do time para tirar dúvidas e receber orientação durante a aplicação do método, com atendimento de qualidade.</p>
+        <p class="card__text">Caso alguma dúvida surja, ela não vai te travar. Você terá acesso ao nosso suporte por e-mail e poderá perguntar sempre que precisar.</p>
       </div>
     </article>
 
@@ -722,15 +782,16 @@ a:hover{color:var(--color-link-hover)}
           <tr><td>Kit Rápido Entrevista</td><td>R$ 97</td></tr>
           <tr><td>Masterclass de Negociação Salarial</td><td>R$ 297</td></tr>
           <tr><td>Workshop Trabalho Rápido</td><td>R$ 147</td></tr>
-          <tr class="total"><td>Total</td><td><s>R$ 1.735</s></td></tr>
+          <tr class="total"><td>Total</td><td>R$ 1.735</td></tr>
         </tbody>
       </table>
-      <div class="surprise"><span class="surprise__emoji" aria-hidden="true">😮</span><div class="surprise__text"><span class="surprise__tag">Bônus surpresa</span><strong>Workshop Os Primeiros 90 Dias</strong></div><s class="surprise__value">R$ 247</s></div>
+      <div class="surprise"><span class="surprise__emoji" aria-hidden="true">😮</span><div class="surprise__text"><span class="surprise__tag">Bônus surpresa</span><strong>Workshop Os Primeiros 90 Dias</strong></div><span class="surprise__value">R$ 247</span></div>
+      <p class="anchor-note">Mas nessa página, você não vai pagar esses valores.</p>
       <div class="price">
         <p class="price__from">De <s>R$ 1.735</s> por</p>
         <p class="price__main">12x de R$ 30,54</p>
         <p class="price__cash">ou R$ 297 à vista</p>
-        <p class="price__perks">Acesso vitalício · Acesso imediato · Suporte com a equipe</p>
+        <p class="price__perks">Acesso vitalício · Suporte com a equipe</p>
       </div>
       <a class="btn btn--primary btn--block" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a>
       <ul class="seals">
@@ -738,7 +799,7 @@ a:hover{color:var(--color-link-hover)}
         <li><svg class="ico"><use href="#i-zap"/></svg>Acesso imediato</li>
         <li><svg class="ico"><use href="#i-shield"/></svg>7 dias de garantia</li>
       </ul>
-      <p class="notice"><strong>ATENÇÃO:</strong> as vagas desta oferta são limitadas, e o preço promocional de R$ 297 só vale enquanto você estiver nesta página. Assim que as vagas esgotarem, o preço volta ao valor normal de R$ 1.735.</p>
+      <p class="notice"><strong>ATENÇÃO:</strong> as vagas desta oferta são limitadas, e o preço especial de R$ 297 só vale enquanto você estiver nesta página. Assim que as vagas esgotarem, o preço volta ao valor normal de R$ 1.735.</p>
     </div>
   </div>
 </section>
@@ -746,26 +807,26 @@ a:hover{color:var(--color-link-hover)}
 <!-- Seção 7: Argumento incontestável -->
 <section class="section" id="garantia">
   <div class="container">
-    <h2 class="h2">Pelo menos uma entrevista por semana. E o seu próximo emprego em até 8 semanas.</h2>
-    <p class="lead">Agora faça a conta.</p>
+    <h2 class="h2">Pelo menos 1 entrevista por semana. E você contratado em até 8 semanas.</h2>
+    <p class="lead">Agora faça as contas.</p>
 
     <div class="math">
       <ul class="math__list">
-        <li>Se você ganhava R$ 7 mil, cada mês sem emprego são R$ 7 mil que não entram.</li>
-        <li>O Você Contratado custa 12x de R$ 30,54, menos de 0,5% desse salário.</li>
+        <li>Se você ganhava R$ 8 mil, cada mês sem emprego são 8 mil reais que não entram.</li>
+        <li>O Você Contratado custa 12x de R$ 30,54. Isso representa menos de 0,5% desse salário.</li>
       </ul>
       <div class="bars tl" aria-hidden="true">
         <div class="tl-head"><span>Antes</span><span>Depois</span></div>
         <div class="tl-row">
           <div class="tl-label"><b>Cada mês sem emprego</b></div>
-          <div class="tl-bar tl-bar--loss"><span class="tl-long">R$ 7 mil que não entram</span><span class="tl-short">−R$ 7 mil</span></div>
+          <div class="tl-bar tl-bar--loss"><span class="tl-long">R$ 8 mil que não entram</span><span class="tl-short">−R$ 8 mil</span></div>
         </div>
         <div class="tl-row tl-row--mid">
           <div class="tl-label"><b>Você Contratado</b><span>12x de R$ 30,54</span></div>
           <div class="tl-bar tl-bar--course"></div>
         </div>
         <div class="tl-row tl-row--mid">
-          <div class="tl-bar tl-bar--hired">R$ 7.000+</div>
+          <div class="tl-bar tl-bar--hired"><span class="tl-long">R$ 8 mil entrando todo mês</span><span class="tl-short">+R$ 8 mil/mês</span></div>
         </div>
       </div>
     </div>
@@ -786,12 +847,12 @@ a:hover{color:var(--color-link-hover)}
         <text x="80" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="800" letter-spacing="3" fill="#5a3b00">DIAS</text>
       </svg>
       <div>
-        <h3 class="h3">Garantia de 7 dias incondicional</h3>
-        <p>Entre, assista e teste. Se achar que não é para você, devolvemos 100% do seu dinheiro.</p>
+        <h3 class="h3">Garantia incondicional de 7 dias</h3>
+        <p>Entre, assista e teste. Se achar que não é para você, devolvemos 100% do seu dinheiro. Sem letra miúda, sem burocracia.</p>
       </div>
     </div>
 
-    <div class="section-cta"><a class="btn btn--primary" href="#oferta">Quero meu próximo emprego</a></div>
+    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a></div>
   </div>
 </section>
 
@@ -800,12 +861,12 @@ a:hover{color:var(--color-link-hover)}
   <div class="container">
     <h2 class="h2">Perguntas frequentes</h2>
     <div class="faq">
-      <details open><summary>O pagamento de R$ 297 é mensal?<span class="plus">+</span></summary><p>Não. É um pagamento único, à vista ou em até 12x de R$ 30,54 no cartão. Custa menos do que uma semana a mais sem salário.</p></details>
-      <details><summary>Por quanto tempo terei acesso?<span class="plus">+</span></summary><p>Para sempre. O acesso é vitalício. Se daqui a alguns anos você quiser mudar de emprego de novo, o Você Contratado continua lá.</p></details>
-      <details><summary>Funciona para a minha área e o meu nível?<span class="plus">+</span></summary><p>Sim. O método trabalha a sua visibilidade no LinkedIn e a forma como você se comunica na entrevista. Isso vale para qualquer área e qualquer nível, do estágio à liderança, e também para quem está em transição de carreira.</p></details>
-      <details><summary>O mercado está difícil. Funciona agora?<span class="plus">+</span></summary><p>É justamente quando o mercado aperta que o preparo faz diferença. Com mais candidatos disputando as mesmas vagas, quem é encontrado pelo recrutador e vai bem na entrevista sai na frente.</p></details>
-      <details><summary>Tenho garantia de que vou conseguir um emprego?<span class="plus">+</span></summary><p>Nenhum método sério pode garantir uma contratação, porque o resultado depende de você aplicar. O que você tem aqui é um método já aplicado por mais de 1.000 alunos, com robôs que executam cada etapa com você, e 7 dias de garantia incondicional para testar.</p></details>
-      <details><summary>Preciso entender de tecnologia para usar os Robôs VOCE?<span class="plus">+</span></summary><p>Não. Os robôs entregam tudo pronto. Você só revisa e usa.</p></details>
+      <details open><summary>O pagamento de R$ 297 é mensal?<span class="plus">+</span></summary><p>Não. É uma compra única, sem mensalidade. Você pode pagar R$ 297 à vista ou em até 12x de R$ 30,54 no cartão. Custa bem menos que o valor real do método, sem falar no aumento salarial que você pode conseguir.</p></details>
+      <details><summary>Por quanto tempo terei acesso ao treinamento?<span class="plus">+</span></summary><p>Para sempre. O acesso é vitalício. Se daqui a alguns anos você quiser mudar de emprego de novo, o Você Contratado continua lá e sempre atualizado.</p></details>
+      <details><summary>Funciona para a minha área e para o meu cargo?<span class="plus">+</span></summary><p>Sim. O método trabalha a sua visibilidade no LinkedIn e a forma como você se comunica na entrevista. Isso vale para qualquer área e qualquer nível, do estágio à liderança, e também para quem está em transição de carreira.</p></details>
+      <details><summary>O mercado está muito difícil. O método funciona hoje?<span class="plus">+</span></summary><p>Desculpe te dizer essa verdade dura: o mercado não está difícil. Enquanto você lê essa mensagem, milhares de recrutadores estão procurando bons candidatos. Quando você virar aluno do Você Contratado e entender como o mercado funciona hoje, isso vai ficar mais claro pra você.</p></details>
+      <details><summary>Preciso entender de tecnologia para implementar o método?<span class="plus">+</span></summary><p>Não. Os robôs entregam tudo pronto. Você só revisa e usa.</p></details>
+      <details><summary>Tenho garantia de que vou conseguir um emprego?<span class="plus">+</span></summary><p>Nenhum método sério pode garantir contratação, porque o resultado depende de você aplicar o que aprendeu. O que você tem aqui é um método já aplicado por mais de 1.000 alunos, com resultados comprovados, e 7 dias de garantia incondicional para você testar.</p></details>
     </div>
   </div>
 </section>
@@ -829,7 +890,7 @@ a:hover{color:var(--color-link-hover)}
         <li><svg class="ico"><use href="#i-zap"/></svg>Acesso imediato</li>
         <li><svg class="ico"><use href="#i-shield"/></svg>7 dias de garantia</li>
       </ul>
-      <p class="notice"><strong>ATENÇÃO:</strong> as vagas desta oferta são limitadas, e o preço promocional de R$ 297 só vale enquanto você estiver nesta página. Assim que as vagas esgotarem, o preço volta ao valor normal de R$ 1.735.</p>
+      <p class="notice"><strong>ATENÇÃO:</strong> as vagas desta oferta são limitadas, e o preço especial de R$ 297 só vale enquanto você estiver nesta página. Assim que as vagas esgotarem, o preço volta ao valor normal de R$ 1.735.</p>
     </div>
   </div>
 </section>
@@ -838,7 +899,7 @@ a:hover{color:var(--color-link-hover)}
 
 <footer class="footer">
   <div class="container footer__inner">
-    <img src="/VSL/assets/logo/logo-white.webp" alt="Você Contratado">
+    <img src="/VSL/assets/logo/logo-white.webp" alt="Você Contratado" loading="lazy">
     <span>© 2026 Você Contratado</span>
   </div>
 </footer>
@@ -861,6 +922,47 @@ document.querySelectorAll('.carousel').forEach(function(c){
   track.addEventListener('scroll',function(){clearTimeout(timer);timer=setTimeout(recenter,140);},{passive:true});
   window.addEventListener('resize',function(){jump(setW()+(track.scrollLeft%setW()));});
 });
+</script>
+
+<!-- Prints do carrossel: só baixam quando a pessoa chega perto do carrossel -->
+<script>
+(function () {
+  var c = document.querySelector('.carousel'); if (!c) return;
+  function carregar() {
+    c.querySelectorAll('img[data-src]').forEach(function (img) {
+      var s = img.getAttribute('data-src');
+      if (location.protocol === 'file:' && s.indexOf('/VSL/') === 0) s = s.slice(5);
+      img.src = s; img.removeAttribute('data-src');
+    });
+  }
+  if (!('IntersectionObserver' in window)) { carregar(); return; }
+  var io = new IntersectionObserver(function (itens) {
+    if (itens.some(function (i) { return i.isIntersecting; })) { carregar(); io.disconnect(); }
+  }, { rootMargin: '600px 0px' });
+  io.observe(c);
+})();
+</script>
+
+<!-- Vídeos do comparativo: só baixam e tocam quando a pessoa chega perto deles -->
+<script>
+(function () {
+  var videos = document.querySelectorAll('video[data-src]');
+  function carregar(v) {
+    var s = v.getAttribute('data-src');
+    if (location.protocol === 'file:' && s.indexOf('/VSL/') === 0) s = s.slice(5);
+    v.src = s; v.removeAttribute('data-src');
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  }
+  if (!('IntersectionObserver' in window)) { videos.forEach(carregar); return; }
+  var io = new IntersectionObserver(function (itens) {
+    itens.forEach(function (i) {
+      if (i.isIntersecting) {
+        if (i.target.hasAttribute('data-src')) carregar(i.target); else i.target.play().catch(function () {});
+      } else if (!i.target.hasAttribute('data-src')) { i.target.pause(); }
+    });
+  }, { rootMargin: '300px 0px' });
+  videos.forEach(function (v) { io.observe(v); });
+})();
 </script>
 
 <!-- Profundidade de rolagem: eventos personalizados no pixel -->
