@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- VTurb: otimização de velocidade do player da VSL (código fornecido pelo VTurb) -->
+<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+<link rel="preload" href="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6ad7c1b15b97ed1e8f512926/v4/player.js" as="script">
+<link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+<link rel="preload" href="https://cdn.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/6ad7c03cb1390d33e6d75bf9/main.m3u8" as="fetch">
+<link rel="dns-prefetch" href="https://cdn.converteai.net">
+<link rel="dns-prefetch" href="https://scripts.converteai.net">
+<link rel="dns-prefetch" href="https://images.converteai.net">
+<link rel="dns-prefetch" href="https://license.vturb.com">
 <script>
 // As imagens usam o caminho completo /VSL/assets/..., que funciona com ou sem barra no fim do endereço.
 // Só ao abrir o arquivo direto no computador (sem servidor) o caminho é trocado para assets/..., para a prévia local funcionar.
@@ -130,14 +139,15 @@ a:hover{color:var(--color-link-hover)}
 
 
 /* Seção 1: Hero */
-.hero{padding:var(--space-20) 0 var(--space-24)}
-.hero__grid{display:grid;grid-template-columns:1fr;grid-template-areas:"head" "video" "cta";row-gap:var(--space-10)}
-.hero__head{grid-area:head;max-width:860px;margin:0 auto;text-align:center}
-.hero__video{grid-area:video;max-width:960px;width:100%;margin:0 auto}
+.hero{padding:var(--space-8) 0 var(--space-20)}
+.hero__grid{display:grid;grid-template-columns:1fr;grid-template-areas:"head" "video" "cta";row-gap:var(--space-6)}
+.hero__head{grid-area:head;max-width:1000px;margin:0 auto;text-align:center}
+.hero__video{grid-area:video;max-width:400px;width:100%;margin:0 auto}
+.hero__video vturb-smartplayer{border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 12px 32px rgba(8,31,34,.25)}
 .hero__cta{grid-area:cta;display:flex;flex-direction:column;align-items:center}
 .hero__fire{color:#d62f1f}
-.hero h1{font-family:var(--font-serif-display);font-weight:var(--fw-medium);font-size:var(--text-display-xl);line-height:var(--lh-tight);letter-spacing:var(--ls-tight)}
-.hero__sub{font-size:var(--text-lg);color:var(--ink-700);margin:var(--space-6) auto 0;max-width:620px}
+.hero h1{font-family:var(--font-serif-display);font-weight:var(--fw-medium);font-size:clamp(1.9rem,1.4rem + 2.2vw,3rem);line-height:var(--lh-tight);letter-spacing:var(--ls-tight)}
+.hero__sub{font-size:var(--text-body);color:var(--ink-700);margin:var(--space-3) auto 0;max-width:640px}
 .video{position:relative;aspect-ratio:16/9;border-radius:var(--radius-lg);background:var(--petrol-950);border:1px solid var(--petrol-900);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .video__play{width:76px;height:76px;border-radius:var(--radius-full);border:1.5px solid rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;color:var(--paper)}
 .video__play .ico{width:28px;height:28px;margin-left:4px}
@@ -402,8 +412,9 @@ a:hover{color:var(--color-link-hover)}
 @media (max-width:860px){
   :root{--gutter:var(--space-4)}
   .section,.final{padding:var(--space-16) 0}
-  .hero{padding:var(--space-10) 0 var(--space-16)}
-  .hero__grid{row-gap:var(--space-6)}
+  .hero{padding:var(--space-5) 0 var(--space-16)}
+  .hero__grid{row-gap:var(--space-4)}
+  .hero__sub{font-size:var(--text-sm)}
   .hero__cta .btn{width:100%}
   .pal-grid,.deliv,.expert,.final__grid{grid-template-columns:1fr}
   .dores{grid-template-columns:1fr;gap:var(--space-5)}
@@ -502,10 +513,8 @@ a:hover{color:var(--color-link-hover)}
       <p class="hero__sub">Você não vai mais precisar dele. Entenda como conseguir o seu próximo emprego em até 8 semanas no vídeo abaixo:</p>
     </div>
     <div class="hero__video">
-      <div class="video" role="img" aria-label="Espaço do vídeo de vendas">
-        <div class="video__play"><svg class="ico"><use href="#i-play"/></svg></div>
-        <span class="video__note">[VSL]</span>
-      </div>
+      <!-- VTurb: player da VSL (código fornecido pelo VTurb) -->
+      <vturb-smartplayer id="vid-6ad7c1b15b97ed1e8f512926" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6ad7c1b15b97ed1e8f512926/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
     </div>
     <div class="hero__cta">
       <div class="social-proof"><div class="social-proof__faces" aria-hidden="true"><img src="/VSL/assets/depoimentos/avatars/amanda.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/renzo.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/ana.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/barbara.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/thais.webp" alt=""></div><span>+1.000 alunos</span></div>
