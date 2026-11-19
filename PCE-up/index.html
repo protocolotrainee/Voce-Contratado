@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Programa Candidato de Elite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Identidade da página /VSL (Você Contratado). Dourado do PCE só no botão e na logo. */
+    :root {
+      --petrol-950:#081f22; --petrol-900:#0d2e32; --petrol-700:#174c53; --petrol-600:#1c5c64; --petrol-100:#dbebec;
+      --ink-900:#363636; --ink-700:#55535f; --ink-500:#6f6d7a; --ink-300:#a9b0b2; --ink-200:#d3d8d9; --ink-100:#e9ecec;
+      --paper:#ffffff; --paper-warm:#fbfbfa;
+
+      --gold-700:#7f6136; --gold-600:#94744a; --gold-500:#ab8b5a; --gold-400:#bf9f6c;
+
+      --font:'Inter',-apple-system,'Segoe UI',sans-serif;
+      --text-body:1.0625rem; --text-lg:1.125rem; --text-xl:1.375rem; --text-sm:0.9375rem; --text-xs:0.8125rem;
+      --radius-md:8px; --radius-lg:14px; --radius-full:999px;
+      --shadow-lg:0 12px 32px rgba(20,24,26,0.12);
+      --fire:#d62f1f; --no:#d63a2f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    h1, h2, h3, p, ul { margin: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink-900);
+      font-family: var(--font);
+      font-size: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 560px; margin: 0 auto; padding: 28px 16px 56px; }
+
+    .ico { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .star { display: inline-block; width: 12px; height: 12px; flex: none; color: currentColor; }
+
+    /* ============ TOPO ============ */
+    .head { text-align: center; }
+
+    .head h1 {
+      font-weight: 800;
+      font-size: clamp(1.9rem, 1.4rem + 2.2vw, 2.75rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    .head p { font-size: var(--text-body); color: var(--ink-700); margin-top: 12px; }
+
+    /* ============ VÍDEO (VTurb) ============ */
+    .video { max-width: 400px; margin: 20px auto 0; }
+
+    .video-label { text-align: center; font-size: var(--text-xs); font-weight: 600; color: var(--ink-700); margin-bottom: 10px; }
+
+    /* Mesmo acabamento do player da página /VSL */
+    .video vturb-smartplayer { border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 12px 32px rgba(8,31,34,.25); }
+
+    .video-placeholder {
+      display: flex;
+      aspect-ratio: 9 / 16;
+      max-height: 440px;
+      margin: 0 auto;
+      border: 2px dashed var(--ink-200);
+      border-radius: var(--radius-lg);
+      background: var(--paper-warm);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      color: var(--ink-500);
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+
+    .video.tem-vsl .video-placeholder { display: none; }
+
+    /* ============ CARTÃO DA OFERTA ============ */
+    /* "esconder" é a classe do delay do VTurb: some até o segundo do pitch */
+    .esconder { display: none; }
+
+    .cta-topo { max-width: 400px; margin: 4px auto 0; }
+
+    .offer {
+      margin-top: 32px;
+      border: 1px solid var(--ink-300);
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      padding: 28px 20px 24px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .offer__logo { display: block; width: 160px; height: auto; margin: 0 auto; }
+
+    .promise {
+      margin-top: 18px;
+      text-align: center;
+      font-size: var(--text-xl);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      text-wrap: balance;
+    }
+
+    .promise span { color: #9c7b4b; }
+
+    .intro { margin-top: 8px; text-align: center; font-size: var(--text-sm); color: var(--ink-700); }
+    .intro strong { color: var(--ink-900); font-weight: 700; }
+
+    /* Entregáveis */
+    .items { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 10px; }
+
+    .item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--ink-200);
+      background: var(--paper-warm);
+    }
+
+    /* Ícones coloridos e cheios */
+    .item__icon {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      color: var(--paper);
+      box-shadow: 0 4px 10px rgba(20,24,26,.16), inset 0 1px 0 rgba(255,255,255,.25);
+    }
+
+    .item__icon svg { width: 26px; height: 26px; }
+    .item__icon--mic svg { width: 32px; height: 32px; }
+
+    /* Paleta análoga e viva (azul, turquesa, índigo, verde): mesma saturação e luminosidade,
+       ancorada nas cores do LinkedIn e do WhatsApp. */
+    .item__icon--li  { background: linear-gradient(145deg, #1a85e8, #0a66c2); --glyph: #0a66c2; }
+    .item__icon--mic { background: linear-gradient(145deg, #22c1c3, #0d8f9a); --glyph: #0d8f9a; }
+    /* Biblioteca: mesma cor do ícone de Treinamento */
+    .item__icon--vid { background: linear-gradient(145deg, #22c1c3, #0d8f9a); }
+
+    .item__icon--vid svg { width: 30px; height: 30px; }
+    .item__icon--wa  { background: linear-gradient(145deg, #3ad677, #14a85a); --glyph: #14a85a; }
+
+    /* Selo de verificado no LinkedIn */
+    .item__badge {
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #0b8f47;
+      border: 2px solid var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item__badge svg { width: 11px; height: 11px; }
+
+    .item__title { display: block; font-size: var(--text-body); font-weight: 700; line-height: 1.3; }
+
+    /* Bônus: etiqueta acima do título e presente à direita */
+    .item__body { flex: 1; min-width: 0; }
+
+    .item__bonus {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94744a;
+      margin-bottom: 2px;
+    }
+
+    .item__gift { flex: none; font-size: 22px; line-height: 1; align-self: flex-start; margin-top: 2px; }
+    .item__text  { display: block; font-size: var(--text-xs); color: var(--ink-500); line-height: 1.45; margin-top: 2px; }
+
+    /* Preço */
+    .price { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--ink-200); text-align: center; }
+    .price__from { font-size: var(--text-body); font-weight: 500; color: var(--ink-700); }
+    .price__from s { font-weight: 700; text-decoration-color: var(--no); text-decoration-thickness: 2px; }
+
+    .price__main {
+      font-size: clamp(2.5rem, 1.9rem + 2.4vw, 3.25rem);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 4px 0 2px;
+    }
+
+    .price__main small { font-size: 0.38em; font-weight: 700; letter-spacing: 0; color: var(--ink-700); }
+    .price__inst { font-size: var(--text-body); font-weight: 700; color: var(--ink-700); }
+    .price__note { margin-top: 10px; font-size: var(--text-xs); font-weight: 600; color: var(--ink-700); }
+
+    /* Botão dourado (cor da logo PCE) */
+    .btn {
+      font-family: var(--font);
+      font-size: var(--text-body);
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 58px;
+      margin-top: 18px;
+      padding: 14px 16px;
+      white-space: nowrap;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      line-height: 1.3;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      background: #0b8f47;
+      border: 1px solid transparent;
+      color: var(--paper);
+      font-weight: 800;
+      box-shadow: 0 6px 18px rgba(11,143,71,.28);
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    /* Verde do botão da página /VSL */
+    .btn:hover  { background: #087a3c; }
+    .btn:active { background: #066a33; transform: scale(0.985); }
+    .btn:focus-visible { outline: 2px solid var(--petrol-700); outline-offset: 3px; }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -60%;
+      width: 45%; height: 100%;
+      z-index: -1;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,.5), transparent);
+      transform: skewX(-20deg);
+      animation: shine 3.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* Botão de recusa: mesmo tamanho do principal, visual neutro */
+    .btn-no {
+      font-family: var(--font);
+      font-size: var(--text-body);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 58px;
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--ink-300);
+      background: var(--paper);
+      color: var(--ink-700);
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-no:hover { background: var(--ink-100); color: var(--ink-900); }
+
+    /* Rodapé com a logo do PCE */
+    .footer { border-top: 1px solid var(--ink-200); padding: 28px 16px 36px; text-align: center; }
+    .footer img { width: 120px; height: auto; display: inline-block; }
+
+    @keyframes shine   { 0% { left: -60%; } 45%, 100% { left: 130%; } }
+    @keyframes entrada { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn::after { animation: none; }
+    }
+
+    @media (min-width: 720px) {
+      .wrap { padding: 48px 24px 72px; }
+      .head p { font-size: var(--text-lg); }
+      .offer { padding: 36px 36px 28px; }
+    }
+  </style>
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2066578667489577');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+</head>
+<body>
+
+<!-- Estrela de 4 pontas da logo PCE -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 15.6 10.5 24 12 15.6 13.5 12.9 16.8 12 24 11.1 16.8 8.4 13.5 0 12 8.4 10.5 11.1 7.2 12 0Z"/></symbol>
+</svg>
+
+<main class="wrap" id="topo">
+
+  <div class="head">
+    <h1>Parabéns pela decisão que vai mudar a sua carreira!</h1>
+    <p>Mas antes... eu tenho um presente pra você no vídeo abaixo.</p>
+  </div>
+
+  <div class="video" id="vsl">
+    <div class="video-label">O presente só é válido enquanto esta página estiver aberta.</div>
+
+    <!-- ===== VTURB: cole aqui o código de incorporação do player (o <vturb-smartplayer> e o <script> que vem junto) ===== -->
+
+    <!-- ===== fim do código do VTurb ===== -->
+
+    <!-- Some sozinho quando o player do VTurb estiver colado acima -->
+    <div class="video-placeholder">Espaço da VSL<br>(vídeo em gravação)</div>
+  </div>
+
+  <!-- Botão de compra logo após a VSL (sem recusa). Aparece junto com a oferta, no delay do VTurb. -->
+  <div class="esconder cta-topo" id="cta-topo">
+    <button class="btn cta-button" data-loading="false" onclick="startLoading(this)">
+      <svg class="star"><use href="#star"/></svg>
+      Quero fazer parte do PCE
+      <svg class="star"><use href="#star"/></svg>
+    </button>
+  </div>
+
+  <!-- OFERTA: aparece no segundo do pitch (delay do VTurb) -->
+  <div class="esconder" id="oferta">
+    <div class="offer">
+      <img class="offer__logo" src="/PCE-up/logo-pce.png" alt="Programa Candidato de Elite" />
+
+      <h2 class="promise">O caminho para a aprovação nas <span>melhores vagas</span></h2>
+      <p class="intro">Nós <strong>fazemos o seu LinkedIn</strong> e te <strong>treinamos para as entrevistas</strong> mais competitivas. 1 ano de acompanhamento comigo e com a minha equipe.</p>
+
+      <ul class="items">
+        <li class="item">
+          <span class="item__icon item__icon--li">
+            <!-- Logo "in" do LinkedIn -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.2 8.4h3.1V19H5.2V8.4zM6.75 3.5a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6zM10.3 8.4h3v1.45h.04c.42-.8 1.44-1.65 2.97-1.65 3.17 0 3.76 2.09 3.76 4.8V19h-3.1v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V19h-3.1V8.4z"/></svg>
+            <span class="item__badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </span>
+          <span>
+            <span class="item__title">LinkedIn feito para você</span>
+            <span class="item__text">Seção por seção, pra você ser encontrado pelos recrutadores das melhores empresas.</span>
+          </span>
+        </li>
+
+        <li class="item">
+          <span class="item__icon item__icon--mic">
+            <!-- Simulação de entrevista: duas pessoas frente a frente, com balão de fala -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2.6" fill="currentColor"/><path d="M1.5 20c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8z" fill="currentColor"/><circle cx="18" cy="10" r="2.6" fill="currentColor"/><path d="M13.5 20c0-3 2-4.8 4.5-4.8s4.5 1.8 4.5 4.8z" fill="currentColor"/><path d="M9.5 2.5h5a1.6 1.6 0 0 1 1.6 1.6v2.2a1.6 1.6 0 0 1-1.6 1.6h-1.6L11.6 9.4V7.9H9.5a1.6 1.6 0 0 1-1.6-1.6V4.1a1.6 1.6 0 0 1 1.6-1.6z" fill="currentColor" opacity=".85"/></svg>
+          </span>
+          <span>
+            <span class="item__title">Treinamentos de entrevista ao vivo</span>
+            <span class="item__text">Mock Interviews para te transformar em um candidato de elite.</span>
+          </span>
+        </li>
+
+        <li class="item">
+          <span class="item__icon item__icon--vid">
+            <!-- Biblioteca de vídeos: pasta com play -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h4.2l2.2 2.2h8.6A2.5 2.5 0 0 1 22 8.7v9.8a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5z" fill="currentColor"/><path d="M10.2 10.6v6l5-3z" fill="#0d8f9a"/></svg>
+          </span>
+          <span class="item__body">
+            <span class="item__bonus">Bônus</span>
+            <span class="item__title">Biblioteca de Entrevistas</span>
+            <span class="item__text">Acervo de simulações de entrevista gravadas, com as perguntas que mais caem.</span>
+          </span>
+          <span class="item__gift" aria-hidden="true">🎁</span>
+        </li>
+
+        <li class="item">
+          <span class="item__icon item__icon--wa">
+            <!-- Balão do WhatsApp com telefone -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.2 21.8l4.9-1.3A9.8 9.8 0 1 0 12 2.2z"/><path fill="#14a85a" d="M8.6 7.2c.2 0 .4 0 .6.4l.8 1.9c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.2.3-.1.5.4.8 1 1.5 1.6 2 .7.6 1.4 1 2.1 1.3.2.1.4 0 .5-.1l.8-.9c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.4 0 .5-.1 1.1-.5 1.5-.5.5-1.3.9-2.1.8-1.6-.1-3.1-.9-4.4-2-1.4-1.2-2.4-2.7-2.8-4.2-.2-.8 0-1.6.5-2.2.3-.4.6-.6 1-.6z"/></svg>
+          </span>
+          <span class="item__body">
+            <span class="item__bonus">Bônus</span>
+            <span class="item__title">Grupo de WhatsApp</span>
+            <span class="item__text">Acesso direto a mim e ao meu time pra tirar as dúvidas do seu caso, receber as novidades do LinkedIn e do recrutamento e desafios que te mantêm em ação.</span>
+          </span>
+          <span class="item__gift" aria-hidden="true">🎁</span>
+        </li>
+      </ul>
+
+      <div class="price">
+        <div class="price__from">De <s>R$4.000</s> por</div>
+        <div class="price__main">R$697 <small>à vista</small></div>
+        <div class="price__inst">ou 12x de R$71,66</div>
+        <p class="price__note">Essa oferta só é válida nesta página</p>
+      </div>
+
+      <button class="btn cta-button" data-loading="false" onclick="startLoading(this)">
+        <svg class="star"><use href="#star"/></svg>
+        Quero fazer parte do PCE
+        <svg class="star"><use href="#star"/></svg>
+      </button>
+
+      <a class="btn-no" id="not-buy-link" href="https://vc.formuladaentrevista.com.br/obrigado">Não quero no momento</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <img src="/PCE-up/logo-pce.png" alt="Programa Candidato de Elite" />
+</footer>
+
+<script>
+  // ===== CONFIGURAÇÃO =====
+  // Segundo da VSL em que a oferta aparece (pitch). Atualizar quando o vídeo do VTurb ficar pronto.
+  var CTA_TEMPO = 0;
+  // Link one-click do upsell na Greenn (Programa Candidato de Elite, R$697).
+  var ONE_CLICK_URL = "https://payfast.greenn.com.br/one-click/7790";
+  // Para onde vai quem recusa.
+  var DECLINE_URL = "https://vc.formuladaentrevista.com.br/obrigado";
+  // =========================
+
+  // Link de recusa: repassa a query string (token da Greenn) e registra o evento
+  (function () {
+    var link = document.getElementById("not-buy-link");
+    link.href = DECLINE_URL + window.location.search;
+    link.addEventListener("click", function () {
+      if (typeof fbq !== 'undefined') fbq('trackCustom', 'UpsellDecline');
+    });
+  })();
+
+  // Tempo na página: captura quem lê mas não assiste o vídeo
+  [30, 60, 120, 180].forEach(function (s) {
+    setTimeout(function () {
+      if (typeof fbq !== 'undefined') fbq('trackCustom', 'TimeOnPage' + s + 's');
+    }, s * 1000);
+  });
+
+  // Compra em 1 clique: trava duplo clique e repassa o token da Greenn
+  window.startLoading = function (button) {
+    if (button.getAttribute('data-loading') === 'true') return;
+    button.setAttribute('data-loading', 'true');
+    if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><path fill="#ffffff" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/><path fill="#ffffff" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>';
+    setTimeout(function () {
+      window.location.href = ONE_CLICK_URL + window.location.search;
+    }, 400);
+  };
+
+  // Delay da oferta pelo VTurb: os elementos com a classe "esconder" aparecem no segundo CTA_TEMPO
+  (function () {
+    var player = document.querySelector("vturb-smartplayer");
+    if (!player) {
+      // Sem VSL ainda: mostra a oferta direto
+      document.querySelectorAll(".esconder").forEach(function (el) { el.classList.remove("esconder"); });
+      return;
+    }
+    document.getElementById("vsl").classList.add("tem-vsl");
+    player.addEventListener("player:ready", function () {
+      player.displayHiddenElements(CTA_TEMPO, [".esconder"], { persist: true });
+    });
+  })();
+</script>
+
+</body>
+</html>
