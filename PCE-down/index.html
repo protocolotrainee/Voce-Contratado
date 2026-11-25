@@ -377,6 +377,16 @@
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
   <!-- End Meta Pixel -->
+
+  <!-- VTurb: carregamento rápido da VSL do downsell -->
+  <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+  <link rel="preload" href="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6b072ce36b942a563edd5373/v4/player.js" as="script">
+  <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+  <link rel="preload" href="https://cdn.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/6b072ae12e83d4daa34bd405/main.m3u8" as="fetch">
+  <link rel="dns-prefetch" href="https://cdn.converteai.net">
+  <link rel="dns-prefetch" href="https://scripts.converteai.net">
+  <link rel="dns-prefetch" href="https://images.converteai.net">
+  <link rel="dns-prefetch" href="https://license.vturb.com">
 </head>
 <body>
 
@@ -393,8 +403,8 @@
   </div>
 
   <div class="video" id="vsl">
-    <!-- ===== VTURB: cole aqui o código de incorporação do player (o <vturb-smartplayer> e o <script> que vem junto) ===== -->
-
+    <!-- ===== VTURB: VSL Downsell PCE (player 6b072ce36b942a563edd5373) ===== -->
+    <vturb-smartplayer id="vid-6b072ce36b942a563edd5373" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6b072ce36b942a563edd5373/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
     <!-- ===== fim do código do VTurb ===== -->
 
     <!-- Some sozinho quando o player do VTurb estiver colado acima -->
@@ -425,11 +435,11 @@
 <script>
   // ===== CONFIGURAÇÃO =====
   // Segundo da VSL em que a oferta aparece (pitch). Atualizar quando o vídeo do VTurb ficar pronto.
-  var CTA_TEMPO = 0;
-  // Links one-click da Greenn de cada opção (criar no painel e colar aqui).
+  var CTA_TEMPO = 70; // 1:10 da VSL do downsell
+  // Links one-click da Greenn de cada opção (cada oferta libera a sua turma no Club).
   var ONE_CLICK = {
-    linkedin:    "",   // Opção 1: LinkedIn feito para você
-    entrevistas: ""    // Opção 2: Treinamento para entrevistas
+    linkedin:    "https://payfast.greenn.com.br/one-click/7843",   // Opção A: LinkedIn feito (oferta 492127)
+    entrevistas: "https://payfast.greenn.com.br/one-click/7844"    // Opção B: Treinamento de entrevistas (oferta 492128)
   };
   // Para onde vai quem recusa.
   var DECLINE_URL = "https://vc.formuladaentrevista.com.br/obrigado";
