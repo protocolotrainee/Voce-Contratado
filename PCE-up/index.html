@@ -307,6 +307,16 @@
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2066578667489577&ev=PageView&noscript=1"/></noscript>
   <!-- End Meta Pixel -->
+
+  <!-- VTurb: carregamento rápido da VSL do upsell -->
+  <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+  <link rel="preload" href="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6b075a3571577403f092b871/v4/player.js" as="script">
+  <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+  <link rel="preload" href="https://cdn.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/6b07512f0af36d6993457a20/main.m3u8" as="fetch">
+  <link rel="dns-prefetch" href="https://cdn.converteai.net">
+  <link rel="dns-prefetch" href="https://scripts.converteai.net">
+  <link rel="dns-prefetch" href="https://images.converteai.net">
+  <link rel="dns-prefetch" href="https://license.vturb.com">
 </head>
 <body>
 
@@ -325,8 +335,8 @@
   <div class="video" id="vsl">
     <div class="video-label">O presente só é válido enquanto esta página estiver aberta.</div>
 
-    <!-- ===== VTURB: cole aqui o código de incorporação do player (o <vturb-smartplayer> e o <script> que vem junto) ===== -->
-
+    <!-- ===== VTURB: VSL Upsell PCE (player 6b075a3571577403f092b871) ===== -->
+    <vturb-smartplayer id="vid-6b075a3571577403f092b871" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6b075a3571577403f092b871/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
     <!-- ===== fim do código do VTurb ===== -->
 
     <!-- Some sozinho quando o player do VTurb estiver colado acima -->
@@ -414,7 +424,7 @@
         <svg class="star"><use href="#star"/></svg>
       </button>
 
-      <a class="btn-no" id="not-buy-link" href="https://vc.formuladaentrevista.com.br/obrigado">Não quero no momento</a>
+      <a class="btn-no" id="not-buy-link" href="https://vc.formuladaentrevista.com.br/PCE-down">Não quero no momento</a>
     </div>
   </div>
 
@@ -427,11 +437,11 @@
 <script>
   // ===== CONFIGURAÇÃO =====
   // Segundo da VSL em que a oferta aparece (pitch). Atualizar quando o vídeo do VTurb ficar pronto.
-  var CTA_TEMPO = 0;
+  var CTA_TEMPO = 647; // 10:47 da VSL do upsell
   // Link one-click do upsell na Greenn (Programa Candidato de Elite, R$697).
   var ONE_CLICK_URL = "https://payfast.greenn.com.br/one-click/7790";
-  // Para onde vai quem recusa.
-  var DECLINE_URL = "https://vc.formuladaentrevista.com.br/obrigado";
+  // Para onde vai quem recusa: o downsell (leva o token junto).
+  var DECLINE_URL = "https://vc.formuladaentrevista.com.br/PCE-down";
   // =========================
 
   // Link de recusa: repassa a query string (token da Greenn) e registra o evento
