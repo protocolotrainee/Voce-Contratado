@@ -152,12 +152,17 @@ a:hover{color:var(--color-link-hover)}
 
 /* Seção 1: Hero */
 .hero{padding:var(--space-8) 0 var(--space-20)}
-.hero__grid{display:grid;grid-template-columns:1fr;grid-template-areas:"head" "video" "cta";row-gap:var(--space-6)}
+.hero__grid{display:grid;grid-template-columns:1fr;grid-template-areas:"head" "video" "pitch" "cta";row-gap:var(--space-6)}
 .hero__head{grid-area:head;max-width:1000px;margin:0 auto;text-align:center}
 .hero__video{grid-area:video;max-width:400px;width:100%;margin:0 auto}
 .hero__video vturb-smartplayer{border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 12px 32px rgba(8,31,34,.25)}
 .hero__cta{grid-area:cta;display:flex;flex-direction:column;align-items:center}
 .hero__fire{color:#d62f1f}
+/* Frase logo abaixo do vídeo, visível desde o início, no mesmo estilo da subheadline da página da bio: 2 linhas no computador e 3 no celular */
+.hero__pitch{grid-area:pitch;max-width:780px;margin:0 auto;text-align:center;font-size:var(--text-body);line-height:var(--lh-relaxed);font-weight:400;color:var(--ink-700);text-wrap:balance}
+@media (max-width:860px){.hero__pitch{font-size:var(--text-sm);margin:0 calc(-1 * var(--space-2))}}
+@media (max-width:380px){.hero__pitch{font-size:0.875rem}}
+@media (max-width:365px){.hero__pitch{font-size:0.8125rem}}
 .hero h1{font-family:var(--font-serif-display);font-weight:var(--fw-medium);font-size:clamp(1.9rem,1.4rem + 2.2vw,3rem);line-height:var(--lh-tight);letter-spacing:var(--ls-tight)}
 .hero__sub{font-size:var(--text-body);color:var(--ink-700);margin:var(--space-3) auto 0;max-width:640px}
 .video{position:relative;aspect-ratio:16/9;border-radius:var(--radius-lg);background:var(--petrol-950);border:1px solid var(--petrol-900);display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -536,9 +541,10 @@ a:hover{color:var(--color-link-hover)}
       <!-- VTurb: player da VSL (código fornecido pelo VTurb) -->
       <vturb-smartplayer id="vid-6ad7c1b15b97ed1e8f512926" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/9e40ab62-4433-4966-a250-5dbca93b621c/players/6ad7c1b15b97ed1e8f512926/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
     </div>
+    <p class="hero__pitch">Pare de procurar emprego como um homem das cavernas. Use os Robôs VOCE, atraia recrutadores e conquiste seu próximo emprego em até 8 semanas.</p>
     <div class="hero__cta">
       <div class="social-proof"><div class="social-proof__faces" aria-hidden="true"><img src="/VSL/assets/depoimentos/avatars/amanda.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/renzo.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/ana.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/barbara.webp" alt=""><img src="/VSL/assets/depoimentos/avatars/thais.webp" alt=""></div><span>+1.000 alunos</span></div>
-      <a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a>
+      <a class="btn btn--primary" href="#oferta">Quero acesso ao Método VOCE</a>
       <ul class="kit">
         <li><svg class="ico ico-sm"><use href="#i-shield"/></svg>7 dias de garantia</li>
         <li><svg class="ico ico-sm"><use href="#i-zap"/></svg>Acesso imediato e vitalício</li>
@@ -678,7 +684,7 @@ a:hover{color:var(--color-link-hover)}
     </div>
 
 
-    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a></div>
+    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero acesso ao Método VOCE</a></div>
   </div>
 </section>
 
@@ -822,7 +828,7 @@ a:hover{color:var(--color-link-hover)}
         <p class="price__cash">ou R$ 297 à vista</p>
         <p class="price__perks">Acesso vitalício · Suporte com a equipe</p>
       </div>
-      <a class="btn btn--primary btn--block" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a>
+      <a class="btn btn--primary btn--block" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero acesso ao Método VOCE</a>
       <ul class="seals">
         <li><svg class="ico"><use href="#i-lock"/></svg>Compra segura</li>
         <li><svg class="ico"><use href="#i-zap"/></svg>Acesso imediato</li>
@@ -881,7 +887,7 @@ a:hover{color:var(--color-link-hover)}
       </div>
     </div>
 
-    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a></div>
+    <div class="section-cta"><a class="btn btn--primary" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero acesso ao Método VOCE</a></div>
   </div>
 </section>
 
@@ -913,7 +919,7 @@ a:hover{color:var(--color-link-hover)}
         <p class="price__main">12x de R$ 30,54</p>
         <p class="price__cash">ou R$ 297 à vista</p>
       </div>
-      <a class="btn btn--primary btn--block" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero meu próximo emprego</a>
+      <a class="btn btn--primary btn--block" href="https://payfast.greenn.com.br/185723/offer/PY8Q2A?ch_id=141892" data-checkout>Quero acesso ao Método VOCE</a>
       <ul class="seals">
         <li><svg class="ico"><use href="#i-lock"/></svg>Compra segura</li>
         <li><svg class="ico"><use href="#i-zap"/></svg>Acesso imediato</li>
